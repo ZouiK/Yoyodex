@@ -49,7 +49,7 @@ const clansData = {
     fuma: {
         name: 'Clan Fūma',
         quote: '« ... »',
-        village: 'Otogakure',
+        village: '???',
         specialty: '???',
         members: 'Hutch Fūma',
         membersLinks: [
