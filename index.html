@@ -21,13 +21,20 @@
     <link rel="preload" href="img/kekkei_genkai.webp" as="image">
     <link rel="preload" href="img/solve logo.png" as="image">
     
-    <script defer src="/_vercel/insights/script.js"></script>
-</head>
+    <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="script.js" as="script">
+    <link rel="preload" href="img/shinobis.webp" as="image">
+    <link rel="preload" href="img/kekkei_genkai.webp" as="image">
+    <link rel="preload" href="img/clans.webp" as="image">
+    </head>
 <body>
     <nav class="main-nav">
         <div class="nav-container">
             <div class="nav-brand" id="navBrand">
-                <img src="img/solve logo.png" alt="Yoyodata Logo" class="nav-logo">
+                <picture>
+  <source srcset="img/solve logo.webp" type="image/webp">
+  <img src="img/solve logo.png" alt="" loading="lazy">
+</picture>
                 <span class="nav-title">Yoyodata</span>
             </div>
             <div class="nav-menu">
@@ -117,13 +124,14 @@
             <!-- Mode par villages - maintenant inutilisé, remplacé par le mode alphabétique -->
         </div>
 
-        </div>
-
         <div id="alphabeticalMode" class="content-mode" style="display: none;">
             <section class="hero" data-title="SHINOBIS">
                 <div class="hero-content">
                     <div class="hero-icon">
-                        <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
+                        <picture>
+  <source srcset="img/solve logo.webp" type="image/webp">
+  <img src="img/solve logo.png" alt="" loading="lazy">
+</picture>
                     </div>
                     <h1 class="hero-title">SHINOBIS</h1>
                     <div class="hero-lines">
@@ -142,7 +150,10 @@
             <section class="hero" data-title="KEKKEI">
                 <div class="hero-content">
                     <div class="hero-icon">
-                        <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
+                        <picture>
+  <source srcset="img/solve logo.webp" type="image/webp">
+  <img src="img/solve logo.png" alt="" loading="lazy">
+</picture>
                     </div>
                     <h1 class="hero-title">KEKKEI GENKAI</h1>
                     <div class="hero-lines">
@@ -173,7 +184,10 @@
             <section class="hero" data-title="CLANS">
                 <div class="hero-content">
                     <div class="hero-icon">
-                        <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
+                        <picture>
+  <source srcset="img/solve logo.webp" type="image/webp">
+  <img src="img/solve logo.png" alt="" loading="lazy">
+</picture>
                     </div>
                     <h1 class="hero-title">CLANS</h1>
                     <div class="hero-lines">
@@ -211,10 +225,14 @@
 
         <script src="script.js"></script>
         <script>
-            window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-        </script>
-        <script defer src="/_vercel/insights/script.js"></script>
-        <script defer src="/_vercel/speed-insights/script.js"></script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => console.log('SW registered'))
+                .catch(error => console.log('SW registration failed'));
+        });
+    }
+    </script>
     </body>
     </html> 
 
