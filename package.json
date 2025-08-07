@@ -1,0 +1,17 @@
+{
+  "name": "naruto-rp-server",
+  "version": "1.0.0",
+  "description": "Serveur de développement pour le site Naruto RP",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
