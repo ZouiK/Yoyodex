@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         // Onglet par défaut (characters)
         initializeVillageMenu();
+        // Afficher le mode alphabétique par défaut
+        showAlphabeticalMode();
+        updateCharactersDisplay();
     }
 });
 
@@ -64,10 +67,7 @@ function initializeVillageMenu() {
         villageText.textContent = 'TOUS LES SHINOBIS';
     }
     
-    // Au chargement initial, afficher directement tous les shinobis triés par ordre alphabétique
-    if (currentTab === 'characters') {
-        updateCharactersDisplay();
-    }
+    // Au chargement initial, les personnages seront affichés par showAlphabeticalMode()
 }
 
 // Appliquer la mise en page avec grille fixe
@@ -90,30 +90,46 @@ function initializeCharacters() {
     // Réinitialiser le tableau des personnages
     allCharacters = [];
     
-    // Sélectionner les cartes de personnages (possèdent data-village mais ne sont pas des cartes de clan)
-    const characterCards = document.querySelectorAll('.character-card[data-village]:not(.clan-card)');
-    
-    characterCards.forEach(card => {
-        const characterName = card.querySelector('h3').textContent;
-        const dataName = card.getAttribute('data-name');
-        
-        const character = {
-            element: card,
-            name: characterName.toLowerCase(),
-            displayName: characterName,
-            title: card.querySelector('.character-title').textContent,
-            description: card.querySelector('.character-description').textContent,
-            image: '', // Sera mis à jour automatiquement
-            village: card.getAttribute('data-village'),
-            clan: card.getAttribute('data-clan') || null,
-            dataName: dataName
-        };
-        
-        // Charger automatiquement l'image avec fallback
-        const imgElement = card.querySelector('img');
-        if (imgElement) {
-            loadCharacterImage(characterName, dataName, imgElement, character);
+    // Définir les personnages directement (puisque les sections de villages ont été supprimées)
+    const charactersData = [
+        {
+            name: "Wallace Uchiha",
+            dataName: "wallace_uchiha",
+            title: "Inventeur",
+            description: "Inventeur génial et amateur de fromage, toujours prêt pour une nouvelle aventure.",
+            village: "konoha",
+            clan: "uchiha"
+        },
+        {
+            name: "Gromit Uzumaki",
+            dataName: "gromit_uzumaki",
+            title: "Chien Intelligent",
+            description: "Chien fidèle et intelligent, partenaire inséparable de Wallace dans toutes ses inventions.",
+            village: "konoha",
+            clan: "uzumaki"
+        },
+        {
+            name: "Hutch Fūma",
+            dataName: "hutch",
+            title: "Maître des Vents",
+            description: "Shinobi du clan Fūma d'Otogakure, expert en techniques de vent et armes de jet.",
+            village: "oto",
+            clan: "fuma"
         }
+    ];
+    
+    charactersData.forEach(charData => {
+        const character = {
+            element: null, // Sera créé dynamiquement
+            name: charData.name.toLowerCase(),
+            displayName: charData.name,
+            title: charData.title,
+            description: charData.description,
+            image: '', // Sera mis à jour automatiquement
+            village: charData.village,
+            clan: charData.clan,
+            dataName: charData.dataName
+        };
         
         allCharacters.push(character);
     });
@@ -121,37 +137,72 @@ function initializeCharacters() {
 
 // Initialiser la liste des clans
 function initializeClans() {
+    console.log('🏛️ initializeClans appelé');
+    
     // Réinitialiser le tableau des clans
     allClans = [];
     
-    // Sélectionner seulement les cartes de clans (elles possèdent l'attribut data-clan ET la classe clan-card)
-    const clanCards = document.querySelectorAll('.character-card[data-clan].clan-card');
-    
-    clanCards.forEach(card => {
-        const clanName = card.querySelector('h3').textContent;
-        const dataName = card.getAttribute('data-name');
-        const village = card.getAttribute('data-village') || 'unknown';
-        
-        const clan = {
-            element: card,
-            name: clanName.toLowerCase(),
-            displayName: clanName,
-            title: card.querySelector('.character-title').textContent,
-            description: card.querySelector('.character-description').textContent,
-            image: '', // Sera mis à jour automatiquement
-            clan: card.getAttribute('data-clan'),
-            village: village,
-            dataName: dataName
-        };
-        
-        // Charger automatiquement l'image avec fallback
-        const imgElement = card.querySelector('img');
-        if (imgElement) {
-            loadCharacterImage(clanName, dataName, imgElement, clan);
+    // Définir les clans directement (puisque les sections de villages ont été supprimées)
+    const clansData = [
+        {
+            name: "Clan Uchiha",
+            dataName: "uchiha",
+            title: "Les descendants du Sage",
+            description: "Clan légendaire réputé pour son Sharingan et sa maîtrise des techniques de feu.",
+            village: "konoha",
+            clan: "uchiha"
+        },
+        {
+            name: "Clan Senju",
+            dataName: "senju",
+            title: "Les héritiers de la Volonté du Feu",
+            description: "Clan fondateur de Konoha, maîtres de toutes les natures de chakra.",
+            village: "konoha",
+            clan: "senju"
+        },
+        {
+            name: "Clan Hyūga",
+            dataName: "hyuga",
+            title: "Les gardiens du Byakugan",
+            description: "Clan noble protégeant le secret du Byakugan et maîtrisant l'art du Jūken.",
+            village: "konoha",
+            clan: "hyuga"
+        },
+        {
+            name: "Clan Uzumaki",
+            dataName: "uzumaki",
+            title: "Les maîtres des sceaux",
+            description: "Clan réputé pour ses techniques de sceaux et sa spirale caractéristique.",
+            village: "konoha",
+            clan: "uzumaki"
+        },
+        {
+            name: "Clan Fūma",
+            dataName: "fuma",
+            title: "Les maîtres des vents",
+            description: "Clan d'Otogakure spécialisé dans les techniques de vent et les armes de jet.",
+            village: "oto",
+            clan: "fuma"
         }
+    ];
+    
+    clansData.forEach(clanData => {
+        const clan = {
+            element: null, // Sera créé dynamiquement
+            name: clanData.name.toLowerCase(),
+            displayName: clanData.name,
+            title: clanData.title,
+            description: clanData.description,
+            image: '', // Sera mis à jour automatiquement
+            clan: clanData.clan,
+            village: clanData.village,
+            dataName: clanData.dataName
+        };
         
         allClans.push(clan);
     });
+    
+    console.log('✅ Clans initialisés:', allClans);
 }
 
 
@@ -519,18 +570,44 @@ function switchTab(tab) {
     }, 150);
 }
 
-// Afficher le mode village
-function showVillageMode() {
-    document.getElementById('charactersMode').style.display = 'block';
-    document.getElementById('alphabeticalMode').style.display = 'none';
-    
-    // Masquer complètement le mode clans
-    document.getElementById('clansMode').style.display = 'none';
-    
-    // Masquer le mode alphabétique des clans s'il existe
+// Fonction showVillageMode supprimée - plus utilisée
+
+// Afficher le mode alphabétique pour les clans
+function showClansAlphabeticalMode() {
+    const charactersMode = document.getElementById('charactersMode');
+    const alphabeticalMode = document.getElementById('alphabeticalMode');
+    const clansMode = document.getElementById('clansMode');
     const clansAlphabeticalMode = document.getElementById('clansAlphabeticalMode');
+    
+    // Masquer les autres modes avec transition
+    [charactersMode, alphabeticalMode, clansMode].forEach(mode => {
+        if (mode) {
+            mode.style.opacity = '0';
+            mode.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                mode.style.display = 'none';
+            }, 150);
+        }
+    });
+    
+    // Afficher le mode alphabétique des clans avec transition
     if (clansAlphabeticalMode) {
-        clansAlphabeticalMode.style.display = 'none';
+        clansAlphabeticalMode.style.display = 'block';
+        setTimeout(() => {
+            clansAlphabeticalMode.style.opacity = '1';
+            clansAlphabeticalMode.style.transform = 'translateY(0)';
+        }, 10);
+    }
+    
+    // Créer la grille alphabétique si elle n'existe pas encore
+    if (!document.getElementById('clansAlphabeticalGrid') || document.getElementById('clansAlphabeticalGrid').children.length === 0) {
+        createClansAlphabeticalGrid();
+    }
+    
+    // Appliquer la classe fixed-grid
+    const clansAlphabeticalGrid = document.getElementById('clansAlphabeticalGrid');
+    if (clansAlphabeticalGrid) {
+        clansAlphabeticalGrid.classList.add('fixed-grid');
     }
 }
 
@@ -582,35 +659,9 @@ function showAlphabeticalMode() {
     }
 }
 
-// Afficher le mode village pour les clans
-function showClansVillageMode() {
-    document.getElementById('clansMode').style.display = 'block';
-    
-    // Masquer complètement les modes personnages
-    document.getElementById('charactersMode').style.display = 'none';
-    document.getElementById('alphabeticalMode').style.display = 'none';
-    
-    // Masquer le mode alphabétique des clans s'il existe
-    const clansAlphabeticalMode = document.getElementById('clansAlphabeticalMode');
-    if (clansAlphabeticalMode) {
-        clansAlphabeticalMode.style.display = 'none';
-    }
-}
+// Fonction showClansVillageMode supprimée - plus utilisée
 
-// Afficher le mode alphabétique pour les clans
-function showClansAlphabeticalMode() {
-    // Masquer le mode alphabétique des personnages
-    document.getElementById('alphabeticalMode').style.display = 'none';
-    
-    // Créer la grille alphabétique si elle n'existe pas encore
-    if (!document.getElementById('clansAlphabeticalGrid')) {
-        createClansAlphabeticalGrid();
-    } else {
-        // Afficher le mode alphabétique existant
-        document.getElementById('clansAlphabeticalMode').style.display = 'block';
-        document.getElementById('clansMode').style.display = 'none';
-    }
-}
+// Fonction showClansAlphabeticalMode supprimée - plus utilisée
 
 // Créer la grille alphabétique
 function createAlphabeticalGrid(characters = null) {
@@ -680,7 +731,7 @@ function updateCharactersDisplay() {
             return matchesSearch && character.village === 'konoha';
         } else if (currentVillage === 'suna') {
             return matchesSearch && character.village === 'suna';
-                } else if (currentVillage === 'oto') {
+        } else if (currentVillage === 'oto') {
             return matchesSearch && character.village === 'oto';
         } else if (currentVillage === 'nukenin') {
             return matchesSearch && character.village === 'nukenin';
@@ -758,65 +809,9 @@ function setHeroBackgroundWithFallback(heroElement, imageName) {
     tryNextFormat();
 }
 
-function showAllCharactersMode(characters) {
-    // Masquer toutes les sections de village
-    const villageSections = document.querySelectorAll('#charactersMode .village-section');
-    villageSections.forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    // Créer ou afficher la grille "Tous les shinobis"
-    let allCharactersGrid = document.getElementById('allCharactersGrid');
-    if (!allCharactersGrid) {
-        allCharactersGrid = document.createElement('div');
-        allCharactersGrid.id = 'allCharactersGrid';
-        allCharactersGrid.className = 'characters-grid fixed-grid';
-        document.getElementById('charactersMode').appendChild(allCharactersGrid);
-    }
-    
-    // Vider la grille
-    allCharactersGrid.innerHTML = '';
-    
-    // Ajouter les personnages filtrés
-    characters.forEach(character => {
-        allCharactersGrid.appendChild(character.element.cloneNode(true));
-    });
-    
-    allCharactersGrid.style.display = 'flex';
-}
+// Fonction showAllCharactersMode supprimée - plus utilisée
 
-function showVillageCharactersMode(characters) {
-    // Masquer la grille "Tous les shinobis"
-    const allCharactersGrid = document.getElementById('allCharactersGrid');
-    if (allCharactersGrid) {
-        allCharactersGrid.style.display = 'none';
-    }
-    
-    // Masquer toutes les sections de village
-    const villageSections = document.querySelectorAll('#charactersMode .village-section');
-    villageSections.forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    // Créer ou afficher la grille du village
-    let villageGrid = document.getElementById('villageCharactersGrid');
-    if (!villageGrid) {
-        villageGrid = document.createElement('div');
-        villageGrid.id = 'villageCharactersGrid';
-        villageGrid.className = 'characters-grid fixed-grid';
-        document.getElementById('charactersMode').appendChild(villageGrid);
-    }
-    
-    // Vider la grille
-    villageGrid.innerHTML = '';
-    
-    // Ajouter les personnages filtrés
-    characters.forEach(character => {
-        villageGrid.appendChild(character.element.cloneNode(true));
-    });
-    
-    villageGrid.style.display = 'flex';
-}
+// Fonction showVillageCharactersMode supprimée - plus utilisée
 
 function filterAndDisplayCharacters() {
     updateCharactersDisplay();
@@ -824,6 +819,11 @@ function filterAndDisplayCharacters() {
 
 // Filtrer et afficher les clans
 function updateClansDisplay() {
+    console.log('🔄 updateClansDisplay appelé');
+    console.log('📊 allClans:', allClans);
+    console.log('🔍 searchTerm:', searchTerm);
+    console.log('🏘️ currentVillage:', currentVillage);
+    
     const filteredClans = allClans.filter(clan => {
         const matchesSearch = clan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                              clan.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -836,12 +836,14 @@ function updateClansDisplay() {
             return matchesSearch && clan.village === 'konoha';
         } else if (currentVillage === 'suna') {
             return matchesSearch && clan.village === 'suna';
-                } else if (currentVillage === 'oto') {
+        } else if (currentVillage === 'oto') {
             return matchesSearch && clan.village === 'oto';
         }
         
         return matchesSearch;
     });
+    
+    console.log('✅ Clans filtrés:', filteredClans);
     
     // Trier par ordre alphabétique
     filteredClans.sort((a, b) => a.name.localeCompare(b.name));
@@ -871,7 +873,7 @@ function updateClansSectionTitle() {
             sectionTitle.textContent = 'CLANS DE SUNA';
             heroSection.setAttribute('data-title', 'SUNAGAKURE');
             setHeroBackgroundWithFallback(heroSection, 'suna');
-                } else if (currentVillage === 'oto') {
+        } else if (currentVillage === 'oto') {
             sectionTitle.textContent = 'CLANS D\'OTO';
             heroSection.setAttribute('data-title', 'OTOGAKURE');
             setHeroBackgroundWithFallback(heroSection, 'oto');
@@ -879,105 +881,13 @@ function updateClansSectionTitle() {
     }
 }
 
-function showAllClansMode(clans) {
-    // Masquer toutes les sections de village
-    const villageSections = document.querySelectorAll('#clansMode .village-section');
-    villageSections.forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    // Créer ou afficher la grille "Tous les clans"
-    let allClansGrid = document.getElementById('allClansGrid');
-    if (!allClansGrid) {
-        allClansGrid = document.createElement('div');
-        allClansGrid.id = 'allClansGrid';
-        allClansGrid.className = 'characters-grid fixed-grid';
-        document.getElementById('clansMode').appendChild(allClansGrid);
-    }
-    
-    // Vider la grille
-    allClansGrid.innerHTML = '';
-    
-    // Ajouter les clans filtrés
-    clans.forEach(clan => {
-        allClansGrid.appendChild(clan.element.cloneNode(true));
-    });
-    
-    allClansGrid.style.display = 'flex';
-}
-
-function showVillageClansMode(clans) {
-    // Masquer la grille "Tous les clans"
-    const allClansGrid = document.getElementById('allClansGrid');
-    if (allClansGrid) {
-        allClansGrid.style.display = 'none';
-    }
-    
-    // Masquer toutes les sections de village
-    const villageSections = document.querySelectorAll('#clansMode .village-section');
-    villageSections.forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    // Créer ou afficher la grille du village
-    let villageGrid = document.getElementById('villageClansGrid');
-    if (!villageGrid) {
-        villageGrid = document.createElement('div');
-        villageGrid.id = 'villageClansGrid';
-        villageGrid.className = 'characters-grid fixed-grid';
-        document.getElementById('clansMode').appendChild(villageGrid);
-    }
-    
-    // Vider la grille
-    villageGrid.innerHTML = '';
-    
-    // Ajouter les clans filtrés
-    clans.forEach(clan => {
-        villageGrid.appendChild(clan.element.cloneNode(true));
-    });
-    
-    villageGrid.style.display = 'flex';
-}
+// Fonctions showAllClansMode et showVillageClansMode supprimées - plus utilisées
 
 function filterAndDisplayClans() {
     updateClansDisplay();
 }
 
-// Filtrer en mode village
-function filterVillageMode() {
-    allCharacters.forEach(character => {
-        const matchesSearch = character.name.includes(searchTerm) || 
-                             character.title.toLowerCase().includes(searchTerm) ||
-                             character.description.toLowerCase().includes(searchTerm);
-        
-        if (matchesSearch) {
-            character.element.style.display = 'block';
-            character.element.classList.remove('hidden');
-            character.element.classList.add('visible');
-        } else {
-            character.element.style.display = 'none';
-            character.element.classList.add('hidden');
-            character.element.classList.remove('visible');
-        }
-    });
-    
-    // Masquer les cartes de clans dans le mode personnages
-    const clanCards = document.querySelectorAll('.clan-card');
-    clanCards.forEach(card => {
-        card.style.display = 'none';
-    });
-    
-    // Masquer les sections vides (seulement pour les personnages)
-    const villageSections = document.querySelectorAll('#charactersMode .village-section');
-    villageSections.forEach(section => {
-        const visibleCards = section.querySelectorAll('.character-card[data-village].visible');
-        if (visibleCards.length === 0) {
-            section.style.display = 'none';
-        } else {
-            section.style.display = 'block';
-        }
-    });
-}
+// Fonction filterVillageMode supprimée - plus utilisée
 
 // Filtrer en mode alphabétique
 function filterAlphabeticalMode() {
@@ -1008,41 +918,7 @@ function filterAlphabeticalMode() {
     });
 }
 
-// Filtrer en mode village pour les clans
-function filterClansVillageMode() {
-    allClans.forEach(clan => {
-        const matchesSearch = clan.name.includes(searchTerm) || 
-                             clan.title.toLowerCase().includes(searchTerm) ||
-                             clan.description.toLowerCase().includes(searchTerm);
-        
-        if (matchesSearch) {
-            clan.element.style.display = 'block';
-            clan.element.classList.remove('hidden');
-            clan.element.classList.add('visible');
-        } else {
-            clan.element.style.display = 'none';
-            clan.element.classList.add('hidden');
-            clan.element.classList.remove('visible');
-        }
-    });
-    
-    // Masquer les cartes de personnages dans le mode clans
-    const characterCards = document.querySelectorAll('.character-card:not(.clan-card)');
-    characterCards.forEach(card => {
-        card.style.display = 'none';
-    });
-    
-    // Masquer les sections vides (seulement pour les clans)
-    const clanSections = document.querySelectorAll('#clansMode .village-section');
-    clanSections.forEach(section => {
-        const visibleCards = section.querySelectorAll('.character-card[data-clan].visible');
-        if (visibleCards.length === 0) {
-            section.style.display = 'none';
-        } else {
-            section.style.display = 'block';
-        }
-    });
-}
+// Fonction filterClansVillageMode supprimée - plus utilisée
 
 // Filtrer en mode alphabétique pour les clans
 function filterClansAlphabeticalMode() {
@@ -1073,62 +949,36 @@ function filterClansAlphabeticalMode() {
 
 // Créer la grille alphabétique pour les clans
 function createClansAlphabeticalGrid(clans = null) {
-    // Masquer le mode village des clans
-    document.getElementById('clansMode').style.display = 'none';
-    
-    // Créer ou afficher la grille alphabétique des clans
-    let clansAlphabeticalMode = document.getElementById('clansAlphabeticalMode');
-    if (!clansAlphabeticalMode) {
-        clansAlphabeticalMode = document.createElement('div');
-        clansAlphabeticalMode.id = 'clansAlphabeticalMode';
-        clansAlphabeticalMode.className = 'content-mode';
-        
-        // Créer la section hero pour les clans
-        const heroSection = document.createElement('section');
-        heroSection.className = 'hero';
-        heroSection.innerHTML = `
-            <div class="hero-content">
-                <div class="hero-icon">
-                    <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
-                </div>
-                <h1 class="hero-title">CLANS</h1>
-                <div class="hero-lines">
-                    <div class="line left-line"></div>
-                    <div class="line right-line"></div>
-                </div>
-            </div>
-        `;
-        
-        // Créer la grille alphabétique
-        const alphabeticalGrid = document.createElement('div');
-        alphabeticalGrid.id = 'clansAlphabeticalGrid';
-        alphabeticalGrid.className = 'alphabetical-grid fixed-grid';
-        
-        clansAlphabeticalMode.appendChild(heroSection);
-        clansAlphabeticalMode.appendChild(alphabeticalGrid);
-        
-        // Insérer après le mode clans existant
-        const clansMode = document.getElementById('clansMode');
-        clansMode.parentNode.insertBefore(clansAlphabeticalMode, clansMode.nextSibling);
-    }
-    
-    clansAlphabeticalMode.style.display = 'block';
+    console.log('🏗️ createClansAlphabeticalGrid appelé');
+    console.log('📋 clans fournis:', clans);
     
     const alphabeticalGrid = document.getElementById('clansAlphabeticalGrid');
+    if (!alphabeticalGrid) {
+        console.error('❌ clansAlphabeticalGrid non trouvé');
+        return;
+    }
+    
+    console.log('✅ clansAlphabeticalGrid trouvé');
     alphabeticalGrid.innerHTML = '';
     
     // Utiliser les clans fournis ou tous les clans
     const clansToShow = clans || allClans;
+    console.log('🎯 clansToShow:', clansToShow);
     
     // Trier les clans par ordre alphabétique
     const sortedClans = [...clansToShow].sort((a, b) => 
         a.displayName.localeCompare(b.displayName, 'fr')
     );
     
+    console.log('📝 sortedClans:', sortedClans);
+    
     sortedClans.forEach(clan => {
+        console.log('🎴 Création de carte pour:', clan.displayName);
         const card = createClansAlphabeticalCard(clan);
         alphabeticalGrid.appendChild(card);
     });
+    
+    console.log('🎉 Grille créée avec', sortedClans.length, 'clans');
 }
 
 // Créer une carte pour le mode alphabétique des clans
