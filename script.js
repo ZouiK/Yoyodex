@@ -1,9 +1,10 @@
 // Variables globales
 let allCharacters = [];
 let allClans = [];
-let currentSort = 'village';
+let currentVillage = 'all';
 let currentTab = 'characters';
 let searchTerm = '';
+let currentKekkeiSort = 'alphabetical';
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,32 +14,37 @@ document.addEventListener('DOMContentLoaded', function() {
     setupAnimations();
     applyFixedGridLayout();
     
-    // Initialiser les options de tri pour l'onglet par défaut (characters)
-    initializeSortOptions();
+    // Vérifier les paramètres d'URL pour déterminer l'onglet actif
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    
+    if (tabParam === 'clans') {
+        switchTab('clans');
+    } else if (tabParam === 'kekkei') {
+        switchTab('kekkei');
+    } else {
+        // Onglet par défaut (characters)
+        initializeVillageMenu();
+    }
 });
 
-// Initialiser les options de tri au démarrage
-function initializeSortOptions() {
-    const rarityOption = document.querySelector('[data-sort="rarity"]');
-    const villageOption = document.querySelector('[data-sort="village"]');
-    const alphabeticalOption = document.querySelector('[data-sort="alphabetical"]');
-    
-    // Au démarrage, on est sur l'onglet "characters" par défaut
-    // Donc on masque l'option de rareté et on affiche village et alphabétique
-    if (rarityOption) rarityOption.style.display = 'none';
-    if (villageOption) villageOption.style.display = 'block';
-    if (alphabeticalOption) alphabeticalOption.style.display = 'block';
-    
-    // S'assurer que l'option village est sélectionnée par défaut
-    document.querySelectorAll('.sort-option').forEach(option => {
+// Initialiser le menu des villages au démarrage
+function initializeVillageMenu() {
+    // S'assurer que l'option "Tous les shinobis" est sélectionnée par défaut
+    document.querySelectorAll('.village-option').forEach(option => {
         option.classList.remove('selected');
     });
-    document.querySelector('[data-sort="village"]').classList.add('selected');
+    document.querySelector('[data-village="all"]').classList.add('selected');
     
     // Mettre à jour le texte affiché
-    const sortText = document.querySelector('.sort-text');
-    if (sortText) {
-        sortText.textContent = 'TRIER PAR : VILLAGE';
+    const villageText = document.querySelector('.village-text');
+    if (villageText) {
+        villageText.textContent = 'TOUS LES SHINOBIS';
+    }
+    
+    // Au chargement initial, afficher directement tous les shinobis triés par ordre alphabétique
+    if (currentTab === 'characters') {
+        updateCharactersDisplay();
     }
 }
 
@@ -126,6 +132,8 @@ function initializeClans() {
     });
 }
 
+
+
 // Fonction améliorée pour charger automatiquement les images
 function loadCharacterImage(characterName, dataName, imgElement, character) {
     // Normaliser le nom en supprimant les accents et caractères spéciaux
@@ -187,37 +195,39 @@ function setupEventListeners() {
         }
     });
     
-    // Nouveau menu déroulant de tri
-    const sortTrigger = document.getElementById('sortTrigger');
-    const sortDropdown = document.getElementById('sortDropdown');
-    const sortOptions = document.querySelectorAll('.sort-option');
+    // Nouveau menu déroulant des villages
+    const villageTrigger = document.getElementById('villageTrigger');
+    const villageDropdown = document.getElementById('villageDropdown');
+    const villageOptions = document.querySelectorAll('.village-option');
     
     // Ouvrir/fermer le menu déroulant
-    sortTrigger.addEventListener('click', function(e) {
-        e.stopPropagation();
-        toggleSortDropdown();
-    });
+    if (villageTrigger) {
+        villageTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleVillageDropdown();
+        });
+    }
     
     // Gérer les clics sur les options
-    sortOptions.forEach(option => {
+    villageOptions.forEach(option => {
         option.addEventListener('click', function(e) {
             e.stopPropagation();
-            const sortType = this.getAttribute('data-sort');
-            selectSortOption(sortType);
+            const villageType = this.getAttribute('data-village');
+            selectVillageOption(villageType);
         });
     });
     
     // Fermer le menu en cliquant ailleurs
     document.addEventListener('click', function(e) {
-        if (!sortDropdown.contains(e.target)) {
-            closeSortDropdown();
+        if (villageDropdown && !villageDropdown.contains(e.target)) {
+            closeVillageDropdown();
         }
     });
     
     // Fermer le menu avec la touche Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            closeSortDropdown();
+            closeVillageDropdown();
         }
     });
     
@@ -238,124 +248,138 @@ function setupEventListeners() {
             handleCharacterClick(card);
         }
     });
+
+    // Gestionnaire du logo Yoyodata pour retour à l'accueil
+    const navBrand = document.getElementById('navBrand');
+    if (navBrand) {
+        navBrand.addEventListener('click', function() {
+            // Retourner à l'onglet Shinobis (accueil)
+            switchTab('characters');
+            
+            // Réinitialiser la recherche
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                searchTerm = '';
+            }
+            
+            // Réinitialiser le village sélectionné
+            currentVillage = 'all';
+            const villageText = document.querySelector('.village-text');
+            if (villageText) {
+                villageText.textContent = 'TOUS LES SHINOBIS';
+            }
+            
+            // Réinitialiser la sélection dans le menu
+            document.querySelectorAll('.village-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector('[data-village="all"]').classList.add('selected');
+            
+            // Afficher tous les personnages
+            updateCharactersDisplay();
+        });
+    }
+    
+    // Event listeners pour le dropdown de tri kekkei genkai
+    const kekkeiSortTrigger = document.getElementById('kekkeiSortTrigger');
+    const kekkeiSortOptions = document.querySelectorAll('#kekkeiSortMenu .village-option');
+    
+    if (kekkeiSortTrigger) {
+        kekkeiSortTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleKekkeiSortDropdown();
+        });
+    }
+    
+    kekkeiSortOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const sortType = this.getAttribute('data-sort');
+            selectKekkeiSortOption(sortType);
+        });
+    });
+    
+    // Fermer le dropdown kekkei en cliquant ailleurs
+    document.addEventListener('click', function(e) {
+        const kekkeiSortDropdown = document.getElementById('kekkeiSortDropdown');
+        if (kekkeiSortDropdown && !kekkeiSortDropdown.contains(e.target)) {
+            closeKekkeiSortDropdown();
+        }
+    });
 }
 
 // Gérer la recherche
 function handleSearch(e) {
     searchTerm = e.target.value.toLowerCase();
     if (currentTab === 'characters') {
-        filterAndDisplayCharacters();
+        updateCharactersDisplay();
     } else if (currentTab === 'clans') {
-        filterAndDisplayClans();
-    } else if (tab === 'kekkei') {
-        currentTab = 'kekkei';
-        if (document.getElementById('kekkeiMode')) {
-            document.getElementById('kekkeiMode').style.display = 'block';
-        }
-        document.getElementById('charactersMode').style.display = 'none';
-        document.getElementById('alphabeticalMode').style.display = 'none';
-        document.getElementById('clansMode').style.display = 'none';
-        const clansAlphabeticalMode2 = document.getElementById('clansAlphabeticalMode');
-        if (clansAlphabeticalMode2) clansAlphabeticalMode2.style.display = 'none';
-        const searchInput2 = document.getElementById('searchInput');
-        if (searchInput2) searchInput2.placeholder = 'TROUVER UN KEKKEI GENKAI';
-        const villageOption = document.querySelector('[data-sort="village"]');
-        if (villageOption) villageOption.style.display = 'none';
-        document.querySelector('[data-sort="alphabetical"]').style.display = 'block';
-        document.querySelector('[data-sort="rarity"]').style.display = 'block';
-        selectSortOption('alphabetical');
+        updateClansDisplay();
+    } else if (currentTab === 'kekkei') {
+        // Pour kekkei genkai, on peut ajouter une logique de recherche spécifique plus tard
     }
 }
 
 // Fonctions pour le menu déroulant
-function toggleSortDropdown() {
-    const sortDropdown = document.getElementById('sortDropdown');
-    const sortTrigger = document.getElementById('sortTrigger');
+function toggleVillageDropdown() {
+    const villageDropdown = document.getElementById('villageDropdown');
+    const villageTrigger = document.getElementById('villageTrigger');
     
-    if (sortDropdown.classList.contains('active')) {
-        closeSortDropdown();
+    if (villageDropdown.classList.contains('active')) {
+        closeVillageDropdown();
     } else {
-        openSortDropdown();
+        openVillageDropdown();
     }
 }
 
-function openSortDropdown() {
-    const sortDropdown = document.getElementById('sortDropdown');
-    const sortTrigger = document.getElementById('sortTrigger');
+function openVillageDropdown() {
+    const villageDropdown = document.getElementById('villageDropdown');
+    const villageTrigger = document.getElementById('villageTrigger');
     
-    sortDropdown.classList.add('active');
-    sortTrigger.classList.add('active');
+    villageDropdown.classList.add('active');
+    villageTrigger.classList.add('active');
 }
 
-function closeSortDropdown() {
-    const sortDropdown = document.getElementById('sortDropdown');
-    const sortTrigger = document.getElementById('sortTrigger');
+function closeVillageDropdown() {
+    const villageDropdown = document.getElementById('villageDropdown');
+    const villageTrigger = document.getElementById('villageTrigger');
     
-    sortDropdown.classList.remove('active');
-    sortTrigger.classList.remove('active');
+    villageDropdown.classList.remove('active');
+    villageTrigger.classList.remove('active');
 }
 
-function selectSortOption(sortType) {
+function selectVillageOption(villageType) {
     // Mettre à jour l'option sélectionnée
-    document.querySelectorAll('.sort-option').forEach(option => {
+    document.querySelectorAll('.village-option').forEach(option => {
         option.classList.remove('selected');
     });
-    document.querySelector(`[data-sort="${sortType}"]`).classList.add('selected');
+    document.querySelector(`[data-village="${villageType}"]`).classList.add('selected');
     
-    // Mettre à jour le texte affiché
-    const sortText = document.querySelector('.sort-text');
-    const sortLabels = {
-        'village': 'VILLAGE',
-        'alphabetical': 'A-Z',
-        'rarity': 'RARETÉ'
-    };
-    sortText.textContent = `TRIER PAR : ${sortLabels[sortType]}`;
+    // Mettre à jour le texte affiché selon le tab actif
+    const villageText = document.querySelector('.village-text');
+    if (villageType === 'all') {
+        if (currentTab === 'characters') {
+            villageText.textContent = 'TOUS LES SHINOBIS';
+        } else if (currentTab === 'clans') {
+            villageText.textContent = 'TOUS LES CLANS';
+        }
+    } else {
+        const villageTypeText = document.querySelector(`[data-village="${villageType}"] .village-option-text`).textContent;
+        villageText.textContent = villageTypeText;
+    }
     
-    // Mettre à jour le tri actuel
-    currentSort = sortType;
+    // Mettre à jour le village actuel
+    currentVillage = villageType;
     
     // Fermer le menu
-    closeSortDropdown();
+    closeVillageDropdown();
     
-    // Appliquer le tri
+    // Appliquer le filtre selon l'onglet actuel
     if (currentTab === 'characters') {
-        // Pour les personnages, seules les options village et alphabétique sont autorisées
-        if (currentSort === 'village') {
-            showVillageMode();
-        } else if (currentSort === 'alphabetical') {
-            showAlphabeticalMode();
-        } else if (currentSort === 'rarity') {
-            // Si par erreur on essaie de trier par rareté, revenir au tri par village
-            currentSort = 'village';
-            selectSortOption('village');
-            return;
-        }
-        filterAndDisplayCharacters();
+        updateCharactersDisplay();
     } else if (currentTab === 'clans') {
-        if (currentSort === 'village') {
-            showClansVillageMode();
-        } else if (currentSort === 'alphabetical') {
-            showClansAlphabeticalMode();
-        } else if (currentSort === 'rarity') {
-            // Si par erreur on essaie de trier par rareté, revenir au tri par village
-            currentSort = 'village';
-            selectSortOption('village');
-            return;
-        }
-        filterAndDisplayClans();
-    } else if (currentTab === 'kekkei') {
-        // Pour kekkei genkai, gérer le tri par rareté
-        if (document.getElementById('kekkeiMode')) {
-            document.getElementById('kekkeiMode').style.display = 'block';
-        }
-        document.getElementById('charactersMode').style.display = 'none';
-        document.getElementById('alphabeticalMode').style.display = 'none';
-        document.getElementById('clansMode').style.display = 'none';
-        const clansAlphabeticalMode2 = document.getElementById('clansAlphabeticalMode');
-        if (clansAlphabeticalMode2) clansAlphabeticalMode2.style.display = 'none';
-        const searchInput2 = document.getElementById('searchInput');
-        if (searchInput2) searchInput2.placeholder = 'TROUVER UN KEKKEI GENKAI';
-        // Le tri par rareté sera géré spécifiquement pour kekkei genkai
+        updateClansDisplay();
     }
 }
 
@@ -367,56 +391,62 @@ function switchTab(tab) {
     });
     document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
     
+    // Mettre à jour l'URL sans recharger la page
+    const url = new URL(window.location);
+    if (tab === 'characters') {
+        url.searchParams.delete('tab');
+    } else {
+        url.searchParams.set('tab', tab);
+    }
+    window.history.pushState({}, '', url);
+    
     // Mettre à jour le placeholder de recherche
     const searchInput = document.getElementById('searchInput');
     if (tab === 'characters') {
-        searchInput.placeholder = 'TROUVER UN PERSONNAGE';
+        searchInput.placeholder = 'TROUVER UN SHINOBI';
     } else if (tab === 'clans') {
         searchInput.placeholder = 'TROUVER UN CLAN';
     }
 
-    // Ajuster le menu de tri selon l'onglet
-    const rarityOption = document.querySelector('[data-sort="rarity"]');
-    const villageOption = document.querySelector('[data-sort="village"]');
-    const alphabeticalOption = document.querySelector('[data-sort="alphabetical"]');
+    // Ajuster le menu des villages selon l'onglet
+    const villageDropdown = document.getElementById('villageDropdown');
+    const villageText = document.querySelector('.village-text');
     
     if (tab === 'characters') {
-        // Pour les personnages : afficher village et alphabétique, masquer rareté
-        if (rarityOption) rarityOption.style.display = 'none';
-        if (villageOption) villageOption.style.display = 'block';
-        if (alphabeticalOption) alphabeticalOption.style.display = 'block';
-        // Si on était sur rareté, revenir au tri par village
-        if (currentSort === 'rarity') {
-            currentSort = 'village';
-            // Mettre à jour l'affichage sans appeler selectSortOption pour éviter la récursion
-            document.querySelectorAll('.sort-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector('[data-sort="village"]').classList.add('selected');
-            const sortText = document.querySelector('.sort-text');
-            sortText.textContent = 'TRIER PAR : VILLAGE';
-        }
+        // Pour les shinobis : afficher le menu des villages avec nukenin
+        if (villageDropdown) villageDropdown.style.display = 'block';
+        if (villageText) villageText.textContent = 'TOUS LES SHINOBIS';
+        // Réinitialiser le village sélectionné
+        currentVillage = 'all';
+        document.querySelectorAll('.village-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        document.querySelector('[data-village="all"]').classList.add('selected');
+        // Masquer le menu de tri kekkei
+        const kekkeiSortDropdown = document.getElementById('kekkeiSortDropdown');
+        if (kekkeiSortDropdown) kekkeiSortDropdown.style.display = 'none';
+        // Afficher l'option nukenin pour les shinobis
+        showNukeninOption();
     } else if (tab === 'clans') {
-        // Pour les clans : afficher village et alphabétique, masquer rareté
-        if (rarityOption) rarityOption.style.display = 'none';
-        if (villageOption) villageOption.style.display = 'block';
-        if (alphabeticalOption) alphabeticalOption.style.display = 'block';
-        // Si on était sur rareté, revenir au tri par village
-        if (currentSort === 'rarity') {
-            currentSort = 'village';
-            // Mettre à jour l'affichage sans appeler selectSortOption pour éviter la récursion
-            document.querySelectorAll('.sort-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector('[data-sort="village"]').classList.add('selected');
-            const sortText = document.querySelector('.sort-text');
-            sortText.textContent = 'TRIER PAR : VILLAGE';
-        }
+        // Pour les clans : afficher le menu des villages sans nukenin
+        if (villageDropdown) villageDropdown.style.display = 'block';
+        if (villageText) villageText.textContent = 'TOUS LES CLANS';
+        // Réinitialiser le village sélectionné
+        currentVillage = 'all';
+        document.querySelectorAll('.village-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        document.querySelector('[data-village="all"]').classList.add('selected');
+        // Masquer le menu de tri kekkei
+        const kekkeiSortDropdown = document.getElementById('kekkeiSortDropdown');
+        if (kekkeiSortDropdown) kekkeiSortDropdown.style.display = 'none';
+        // Masquer l'option nukenin pour les clans
+        hideNukeninOption();
     } else if (tab === 'kekkei') {
-        // Pour kekkei genkai : afficher alphabétique et rareté, masquer village
-        if (rarityOption) rarityOption.style.display = 'block';
-        if (villageOption) villageOption.style.display = 'none';
-        if (alphabeticalOption) alphabeticalOption.style.display = 'block';
+        // Pour kekkei genkai : masquer le menu des villages et afficher le menu de tri
+        if (villageDropdown) villageDropdown.style.display = 'none';
+        const kekkeiSortDropdown = document.getElementById('kekkeiSortDropdown');
+        if (kekkeiSortDropdown) kekkeiSortDropdown.style.display = 'block';
     }
 
     // Masquer tous les modes
@@ -435,20 +465,12 @@ function switchTab(tab) {
     // Afficher le mode approprié
     if (tab === 'characters') {
         currentTab = 'characters';
-        if (currentSort === 'village') {
-            showVillageMode();
-        } else {
-            showAlphabeticalMode();
-        }
-        filterAndDisplayCharacters();
+        showAlphabeticalMode(); // Afficher directement la vue alphabétique
+        updateCharactersDisplay();
     } else if (tab === 'clans') {
         currentTab = 'clans';
-        if (currentSort === 'village') {
-            showClansVillageMode();
-        } else {
-            showClansAlphabeticalMode();
-        }
-        filterAndDisplayClans();
+        showClansAlphabeticalMode(); // Afficher directement la vue alphabétique
+        updateClansDisplay();
     } else if (tab === 'kekkei') {
         currentTab = 'kekkei';
         if (document.getElementById('kekkeiMode')) {
@@ -461,11 +483,6 @@ function switchTab(tab) {
         if (clansAlphabeticalMode2) clansAlphabeticalMode2.style.display = 'none';
         const searchInput2 = document.getElementById('searchInput');
         if (searchInput2) searchInput2.placeholder = 'TROUVER UN KEKKEI GENKAI';
-        const villageOption = document.querySelector('[data-sort="village"]');
-        if (villageOption) villageOption.style.display = 'none';
-        document.querySelector('[data-sort="alphabetical"]').style.display = 'block';
-        document.querySelector('[data-sort="rarity"]').style.display = 'block';
-        selectSortOption('alphabetical');
     }
 }
 
@@ -541,12 +558,15 @@ function showClansAlphabeticalMode() {
 }
 
 // Créer la grille alphabétique
-function createAlphabeticalGrid() {
+function createAlphabeticalGrid(characters = null) {
     const alphabeticalGrid = document.getElementById('alphabeticalGrid');
     alphabeticalGrid.innerHTML = '';
     
+    // Utiliser les personnages fournis ou tous les personnages
+    const charactersToShow = characters || allCharacters;
+    
     // Trier les personnages par ordre alphabétique
-    const sortedCharacters = [...allCharacters].sort((a, b) => 
+    const sortedCharacters = [...charactersToShow].sort((a, b) => 
         a.displayName.localeCompare(b.displayName, 'fr')
     );
     
@@ -586,21 +606,279 @@ function createAlphabeticalCard(character) {
 }
 
 // Filtrer et afficher les personnages
-function filterAndDisplayCharacters() {
-    if (currentSort === 'village') {
-        filterVillageMode();
-    } else {
-        filterAlphabeticalMode();
+function updateCharactersDisplay() {
+    const filteredCharacters = allCharacters.filter(character => {
+        const matchesSearch = character.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             character.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             (character.clan && character.clan.toLowerCase().includes(searchTerm.toLowerCase()));
+        
+        // Filtrer par village si un village spécifique est sélectionné
+        if (currentVillage === 'all') {
+            return matchesSearch;
+        } else if (currentVillage === 'konoha') {
+            return matchesSearch && character.village === 'konoha';
+        } else if (currentVillage === 'suna') {
+            return matchesSearch && character.village === 'suna';
+                } else if (currentVillage === 'oto') {
+            return matchesSearch && character.village === 'oto';
+        } else if (currentVillage === 'nukenin') {
+            return matchesSearch && character.village === 'nukenin';
+        }
+        
+        return matchesSearch;
+    });
+    
+    // Trier par ordre alphabétique
+    filteredCharacters.sort((a, b) => a.displayName.localeCompare(b.displayName));
+    
+    // Mettre à jour le titre de la section
+    updateCharactersSectionTitle();
+    
+    // Créer la grille alphabétique avec les personnages filtrés
+    createAlphabeticalGrid(filteredCharacters);
+}
+
+function updateCharactersSectionTitle() {
+    // Chercher le titre et le hero dans le mode alphabétique (qui est actuellement affiché)
+    const sectionTitle = document.querySelector('#alphabeticalMode .hero-title');
+    const heroSection = document.querySelector('#alphabeticalMode .hero');
+    
+    if (sectionTitle && heroSection) {
+        if (currentVillage === 'all') {
+            sectionTitle.textContent = 'SHINOBIS';
+            heroSection.setAttribute('data-title', 'SHINOBIS');
+            setHeroBackgroundWithFallback(heroSection, 'shinobis');
+        } else if (currentVillage === 'konoha') {
+            sectionTitle.textContent = 'KONOHA';
+            heroSection.setAttribute('data-title', 'KONOHA');
+            setHeroBackgroundWithFallback(heroSection, 'konoha');
+        } else if (currentVillage === 'suna') {
+            sectionTitle.textContent = 'SUNA';
+            heroSection.setAttribute('data-title', 'SUNAGAKURE');
+            setHeroBackgroundWithFallback(heroSection, 'suna');
+                } else if (currentVillage === 'oto') {
+            sectionTitle.textContent = 'OTO';
+            heroSection.setAttribute('data-title', 'OTOGAKURE');
+            setHeroBackgroundWithFallback(heroSection, 'oto');
+        } else if (currentVillage === 'nukenin') {
+            sectionTitle.textContent = 'NUKENIN';
+            heroSection.setAttribute('data-title', 'NUKENIN');
+            setHeroBackgroundWithFallback(heroSection, 'nukenin');
+        }
     }
 }
 
-// Filtrer et afficher les clans
-function filterAndDisplayClans() {
-    if (currentSort === 'village') {
-        filterClansVillageMode();
-    } else {
-        filterClansAlphabeticalMode();
+function setHeroBackgroundWithFallback(heroElement, imageName) {
+    const formats = ['gif', 'png', 'jpg', 'jpeg', 'webp'];
+    let currentFormatIndex = 0;
+    
+    function tryNextFormat() {
+        if (currentFormatIndex >= formats.length) {
+            // Si aucun format ne fonctionne, ne mettre aucune image de fond
+            heroElement.style.backgroundImage = 'none';
+            return;
+        }
+        
+        const format = formats[currentFormatIndex];
+        const imageUrl = `img/${imageName}.${format}`;
+        
+        const img = new Image();
+        img.onload = function() {
+            heroElement.style.backgroundImage = `url('${imageUrl}')`;
+        };
+        img.onerror = function() {
+            currentFormatIndex++;
+            tryNextFormat();
+        };
+        img.src = imageUrl;
     }
+    
+    tryNextFormat();
+}
+
+function showAllCharactersMode(characters) {
+    // Masquer toutes les sections de village
+    const villageSections = document.querySelectorAll('#charactersMode .village-section');
+    villageSections.forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Créer ou afficher la grille "Tous les shinobis"
+    let allCharactersGrid = document.getElementById('allCharactersGrid');
+    if (!allCharactersGrid) {
+        allCharactersGrid = document.createElement('div');
+        allCharactersGrid.id = 'allCharactersGrid';
+        allCharactersGrid.className = 'characters-grid fixed-grid';
+        document.getElementById('charactersMode').appendChild(allCharactersGrid);
+    }
+    
+    // Vider la grille
+    allCharactersGrid.innerHTML = '';
+    
+    // Ajouter les personnages filtrés
+    characters.forEach(character => {
+        allCharactersGrid.appendChild(character.element.cloneNode(true));
+    });
+    
+    allCharactersGrid.style.display = 'flex';
+}
+
+function showVillageCharactersMode(characters) {
+    // Masquer la grille "Tous les shinobis"
+    const allCharactersGrid = document.getElementById('allCharactersGrid');
+    if (allCharactersGrid) {
+        allCharactersGrid.style.display = 'none';
+    }
+    
+    // Masquer toutes les sections de village
+    const villageSections = document.querySelectorAll('#charactersMode .village-section');
+    villageSections.forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Créer ou afficher la grille du village
+    let villageGrid = document.getElementById('villageCharactersGrid');
+    if (!villageGrid) {
+        villageGrid = document.createElement('div');
+        villageGrid.id = 'villageCharactersGrid';
+        villageGrid.className = 'characters-grid fixed-grid';
+        document.getElementById('charactersMode').appendChild(villageGrid);
+    }
+    
+    // Vider la grille
+    villageGrid.innerHTML = '';
+    
+    // Ajouter les personnages filtrés
+    characters.forEach(character => {
+        villageGrid.appendChild(character.element.cloneNode(true));
+    });
+    
+    villageGrid.style.display = 'flex';
+}
+
+function filterAndDisplayCharacters() {
+    updateCharactersDisplay();
+}
+
+// Filtrer et afficher les clans
+function updateClansDisplay() {
+    const filteredClans = allClans.filter(clan => {
+        const matchesSearch = clan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             clan.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             clan.description.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        // Filtrer par village si un village spécifique est sélectionné
+        if (currentVillage === 'all') {
+            return matchesSearch;
+        } else if (currentVillage === 'konoha') {
+            return matchesSearch && clan.village === 'konoha';
+        } else if (currentVillage === 'suna') {
+            return matchesSearch && clan.village === 'suna';
+                } else if (currentVillage === 'oto') {
+            return matchesSearch && clan.village === 'oto';
+        }
+        
+        return matchesSearch;
+    });
+    
+    // Trier par ordre alphabétique
+    filteredClans.sort((a, b) => a.name.localeCompare(b.name));
+    
+    // Mettre à jour le titre de la section
+    updateClansSectionTitle();
+    
+    // Créer la grille alphabétique avec les clans filtrés
+    createClansAlphabeticalGrid(filteredClans);
+}
+
+function updateClansSectionTitle() {
+    // Chercher le titre et le hero dans le mode alphabétique des clans (qui est actuellement affiché)
+    const sectionTitle = document.querySelector('#clansAlphabeticalMode .hero-title');
+    const heroSection = document.querySelector('#clansAlphabeticalMode .hero');
+    
+    if (sectionTitle && heroSection) {
+        if (currentVillage === 'all') {
+            sectionTitle.textContent = 'CLANS';
+            heroSection.setAttribute('data-title', 'CLANS');
+            setHeroBackgroundWithFallback(heroSection, 'clans');
+        } else if (currentVillage === 'konoha') {
+            sectionTitle.textContent = 'CLANS DE KONOHA';
+            heroSection.setAttribute('data-title', 'KONOHA');
+            setHeroBackgroundWithFallback(heroSection, 'konoha');
+        } else if (currentVillage === 'suna') {
+            sectionTitle.textContent = 'CLANS DE SUNA';
+            heroSection.setAttribute('data-title', 'SUNAGAKURE');
+            setHeroBackgroundWithFallback(heroSection, 'suna');
+                } else if (currentVillage === 'oto') {
+            sectionTitle.textContent = 'CLANS D\'OTO';
+            heroSection.setAttribute('data-title', 'OTOGAKURE');
+            setHeroBackgroundWithFallback(heroSection, 'oto');
+        }
+    }
+}
+
+function showAllClansMode(clans) {
+    // Masquer toutes les sections de village
+    const villageSections = document.querySelectorAll('#clansMode .village-section');
+    villageSections.forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Créer ou afficher la grille "Tous les clans"
+    let allClansGrid = document.getElementById('allClansGrid');
+    if (!allClansGrid) {
+        allClansGrid = document.createElement('div');
+        allClansGrid.id = 'allClansGrid';
+        allClansGrid.className = 'characters-grid fixed-grid';
+        document.getElementById('clansMode').appendChild(allClansGrid);
+    }
+    
+    // Vider la grille
+    allClansGrid.innerHTML = '';
+    
+    // Ajouter les clans filtrés
+    clans.forEach(clan => {
+        allClansGrid.appendChild(clan.element.cloneNode(true));
+    });
+    
+    allClansGrid.style.display = 'flex';
+}
+
+function showVillageClansMode(clans) {
+    // Masquer la grille "Tous les clans"
+    const allClansGrid = document.getElementById('allClansGrid');
+    if (allClansGrid) {
+        allClansGrid.style.display = 'none';
+    }
+    
+    // Masquer toutes les sections de village
+    const villageSections = document.querySelectorAll('#clansMode .village-section');
+    villageSections.forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Créer ou afficher la grille du village
+    let villageGrid = document.getElementById('villageClansGrid');
+    if (!villageGrid) {
+        villageGrid = document.createElement('div');
+        villageGrid.id = 'villageClansGrid';
+        villageGrid.className = 'characters-grid fixed-grid';
+        document.getElementById('clansMode').appendChild(villageGrid);
+    }
+    
+    // Vider la grille
+    villageGrid.innerHTML = '';
+    
+    // Ajouter les clans filtrés
+    clans.forEach(clan => {
+        villageGrid.appendChild(clan.element.cloneNode(true));
+    });
+    
+    villageGrid.style.display = 'flex';
+}
+
+function filterAndDisplayClans() {
+    updateClansDisplay();
 }
 
 // Filtrer en mode village
@@ -732,7 +1010,7 @@ function filterClansAlphabeticalMode() {
 }
 
 // Créer la grille alphabétique pour les clans
-function createClansAlphabeticalGrid() {
+function createClansAlphabeticalGrid(clans = null) {
     // Masquer le mode village des clans
     document.getElementById('clansMode').style.display = 'none';
     
@@ -777,8 +1055,11 @@ function createClansAlphabeticalGrid() {
     const alphabeticalGrid = document.getElementById('clansAlphabeticalGrid');
     alphabeticalGrid.innerHTML = '';
     
+    // Utiliser les clans fournis ou tous les clans
+    const clansToShow = clans || allClans;
+    
     // Trier les clans par ordre alphabétique
-    const sortedClans = [...allClans].sort((a, b) => 
+    const sortedClans = [...clansToShow].sort((a, b) => 
         a.displayName.localeCompare(b.displayName, 'fr')
     );
     
@@ -834,10 +1115,10 @@ function handleCharacterClick(card) {
     
     // Rediriger vers la page appropriée
     if (currentTab === 'clans') {
-        // Pour les clans, rediriger vers la page de clan
+        // Pour les clans, rediriger vers la page de clan dynamique
         window.location.href = `clan-detail.html?clan=${dataName}`;
     } else {
-        // Pour les personnages, rediriger vers la nouvelle page
+        // Pour les personnages, rediriger vers la page dynamique
         window.location.href = `character-detail.html?character=${dataName}`;
     }
 }
@@ -1310,4 +1591,57 @@ function setupContactModal() {
 document.addEventListener('DOMContentLoaded', function() {
     addBackToTopButton();
     setupContactModal();
-}); 
+    
+    // Au chargement initial, afficher directement la vue alphabétique des shinobis
+    if (currentTab === 'characters') {
+        showAlphabeticalMode();
+        updateCharactersDisplay();
+    }
+});
+
+// Fonctions pour le tri des kekkei genkai
+function toggleKekkeiSortDropdown() {
+    const dropdown = document.getElementById('kekkeiSortDropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('active');
+    }
+}
+
+function closeKekkeiSortDropdown() {
+    const dropdown = document.getElementById('kekkeiSortDropdown');
+    if (dropdown) {
+        dropdown.classList.remove('active');
+    }
+}
+
+function selectKekkeiSortOption(sortType) {
+    currentKekkeiSort = sortType;
+    
+    // Mettre à jour le texte affiché
+    const sortText = document.querySelector('#kekkeiSortTrigger .village-text');
+    if (sortType === 'alphabetical') {
+        sortText.textContent = 'TRIER PAR A-Z';
+    } else if (sortType === 'rarity') {
+        sortText.textContent = 'TRIER PAR RARETÉ';
+    }
+    
+    // Fermer le dropdown
+    closeKekkeiSortDropdown();
+    
+    console.log(`Tri kekkei genkai par: ${sortType}`);
+}
+
+// Fonctions pour gérer l'option nukenin dynamiquement
+function showNukeninOption() {
+    const nukeninOption = document.querySelector('[data-village="nukenin"]');
+    if (nukeninOption) {
+        nukeninOption.style.display = 'flex';
+    }
+}
+
+function hideNukeninOption() {
+    const nukeninOption = document.querySelector('[data-village="nukenin"]');
+    if (nukeninOption) {
+        nukeninOption.style.display = 'none';
+    }
+}

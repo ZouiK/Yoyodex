@@ -6,6 +6,9 @@ const clansData = {
         village: '???',
         specialty: '???',
         members: '???',
+        membersLinks: [
+            {name: 'Wallace Uchiha', key: 'wallace_uchiha'}
+        ],
         bio: `...`,
         portrait: 'img/uchiha.png',
         emblem: 'img/solve logo.png'
@@ -36,11 +39,29 @@ const clansData = {
         village: '???',
         specialty: '???',
         members: '???',
+        membersLinks: [
+            {name: 'Gromit Uzumaki', key: 'gromit_uzumaki'}
+        ],
         bio: `...`,
         portrait: 'img/uzumaki.jpg',
         emblem: 'img/solve logo.png'
+    },
+    fuma: {
+        name: 'Clan Fūma',
+        quote: '« Les vents du changement portent notre destin. »',
+        village: 'Otogakure',
+        specialty: 'Techniques de vent et armes de jet',
+        members: 'Hutch Fūma',
+        membersLinks: [
+            {name: 'Hutch Fūma', key: 'hutch'}
+        ],
+        bio: `...`,
+        portrait: 'img/fuma.png',
+        emblem: 'img/solve logo.png'
     }
 };
+
+
 
 function loadClan() {
     const params = new URLSearchParams(window.location.search);
@@ -76,11 +97,23 @@ function loadClan() {
     const portraitImgEl = document.getElementById('portraitImg');
     const emblemImgEl = document.getElementById('emblemImg');
 
+
+
     if (clanNameEl) clanNameEl.textContent = clan.name;
     if (clanQuoteEl) clanQuoteEl.textContent = clan.quote;
     if (villageFieldEl) villageFieldEl.textContent = clan.village;
     if (specialtyFieldEl) specialtyFieldEl.textContent = clan.specialty;
-    if (membersFieldEl) membersFieldEl.textContent = clan.members;
+    if (membersFieldEl) {
+        if (clan.membersLinks && clan.membersLinks.length > 0) {
+            // Créer des liens cliquables pour chaque membre
+            const memberLinks = clan.membersLinks.map(member => {
+                return `<a href="character-detail.html?character=${member.key}" class="member-link">${member.name}</a>`;
+            }).join(', ');
+            membersFieldEl.innerHTML = memberLinks;
+        } else {
+            membersFieldEl.textContent = clan.members;
+        }
+    }
     if (bioTextEl) bioTextEl.textContent = clan.bio;
     
     // Charger les images avec gestion d'erreur
@@ -100,6 +133,8 @@ function loadClan() {
 
     // Peupler la liste des membres
     populateMembers(key);
+
+
 }
 
 // Générer la liste des membres du clan
@@ -115,6 +150,9 @@ const clanMembersList = {
     ],
     uzumaki: [
         {key:'gromit_uzumaki', name:'Gromit Uzumaki', title:'Chien Ninja', desc:'Chien fidèle et tacticien.', img:'img/gromit_uzumaki.jpg'}
+    ],
+    fuma: [
+        {key:'hutch', name:'Hutch Fūma', title:'Maître des Vents', desc:'Shinobi d\'Otogakure, expert en techniques de vent et armes de jet.', img:'img/hutch.png'}
     ]
 };
 
@@ -147,7 +185,7 @@ function populateMembers(clanKey) {
         
         card.addEventListener('click',()=>{
             // Vérifier si le personnage existe dans les données
-            if (member.key === 'wallace_uchiha' || member.key === 'gromit_uzumaki') {
+            if (member.key === 'wallace_uchiha' || member.key === 'gromit_uzumaki' || member.key === 'hutch') {
                 window.location.href = `character-detail.html?character=${member.key}`;
             } else {
                 // Pour les personnages qui n'ont pas encore de page de détail

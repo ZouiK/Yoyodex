@@ -4,27 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wallace - Yoyodex</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="character-page.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Barre de navigation principale -->
     <nav class="main-nav">
         <div class="nav-container">
-            <div class="nav-brand">
-                <img src="img/solve logo.png" alt="Yoyodex Logo" class="nav-logo">
-                <span class="nav-title">Yoyodex</span>
+            <div class="nav-brand" id="navBrand">
+                <img src="img/solve logo.png" alt="Yoyodata Logo" class="nav-logo">
+                <span class="nav-title">Yoyodata</span>
             </div>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Personnages</a>
-                <a href="index.html#clans" class="nav-link">Clans</a>
-            </div>
+                         <div class="nav-menu">
+                 <a href="index.html" class="nav-link active">Shinobis</a>
+                 <a href="index.html?tab=clans" class="nav-link">Clans</a>
+                 <a href="index.html?tab=kekkei" class="nav-link">Kekkei Genkai</a>
+             </div>
         </div>
     </nav>
 
-    <!-- Header du personnage -->
     <header class="character-header">
         <div class="character-header-bg"></div>
         <div class="character-header-content">
@@ -44,10 +42,8 @@
         </div>
     </header>
 
-    <!-- Contenu principal -->
     <main class="character-main">
         <div class="character-content">
-            <!-- Section Histoire -->
             <section class="character-section">
                 <h2 class="section-title">Histoire</h2>
                 <div class="section-content">
@@ -56,7 +52,6 @@
                 </div>
             </section>
 
-            <!-- Section Statistiques -->
             <section class="character-section">
                 <h2 class="section-title">Statistiques</h2>
                 <div class="stats-grid">
@@ -117,7 +112,6 @@
                 </div>
             </section>
 
-            <!-- Section Techniques -->
             <section class="character-section">
                 <h2 class="section-title">Techniques Spéciales</h2>
                 <div class="techniques-grid">
@@ -147,12 +141,20 @@
         </div>
     </main>
 
-    <!-- Bouton retour -->
     <a href="index.html" class="back-button">
         <i class="fas fa-arrow-left"></i>
-        <span>Retour aux Personnages</span>
+        <span>Retour aux Shinobis</span>
     </a>
 
     <script src="character-page.js"></script>
+    <script>
+        // Gestionnaire du logo Yoyodata pour retour à l'accueil
+        const navBrand = document.getElementById('navBrand');
+        if (navBrand) {
+            navBrand.addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
 </body>
 </html> 

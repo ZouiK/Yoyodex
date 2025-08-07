@@ -11,6 +11,7 @@ body {
     color: #ffffff;
     background: #0f1419;
     min-height: 100vh;
+    padding-top: 70px; /* Espace pour la barre de navigation fixe */
 }
 
 /* Barre de navigation principale - Style League of Legends */
@@ -40,6 +41,12 @@ body {
     align-items: center;
     gap: 15px;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-brand:hover {
+    transform: scale(1.05);
 }
 
 .nav-logo {
@@ -337,6 +344,120 @@ body {
     height: 200px;
 }
 
+/* Menu déroulant des villages style League of Legends */
+.village-dropdown {
+    position: relative;
+    min-width: 200px;
+}
+
+.village-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.village-trigger:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(200, 170, 110, 0.3);
+}
+
+.village-trigger.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #c8aa6e;
+    box-shadow: 0 0 0 2px rgba(200, 170, 110, 0.2);
+}
+
+.village-text {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.village-arrow {
+    color: #c8aa6e;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    margin-left: 10px;
+}
+
+.village-trigger.active .village-arrow {
+    transform: rotate(180deg);
+}
+
+.village-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1a1f2e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.village-dropdown.active .village-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.village-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #a09b8c;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.village-option:last-child {
+    border-bottom: none;
+}
+
+.village-option:hover {
+    background: rgba(200, 170, 110, 0.1);
+    color: #c8aa6e;
+}
+
+.village-option.selected {
+    background: rgba(200, 170, 110, 0.2);
+    color: #c8aa6e;
+}
+
+.village-option-icon {
+    color: #c8aa6e;
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+}
+
+.village-option-text {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: inherit;
+}
+
 /* Main Content - Zone élargie comme LoL */
 .main {
     margin-top: 150px;
@@ -352,15 +473,37 @@ body {
 /* Hero Section style LoL */
 .hero {
     height: 60vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+    z-index: 1;
+}
+
+.hero[data-title="SHINOBIS"] {
+    background-image: url('img/shinobis.webp');
+}
+
+.hero[data-title="CLANS"] {
+    background-image: url('img/shinobis.webp');
+}
+
+.hero[data-title="KEKKEI"] {
+    background-image: url('img/kekkei_genkai.webp');
 }
 
 .hero-content {
@@ -402,6 +545,8 @@ body {
     margin-bottom: 30px;
     text-transform: uppercase;
     letter-spacing: 3px;
+    position: relative;
+    z-index: 2;
 }
 
 .hero-lines {
@@ -867,35 +1012,35 @@ body {
         left: 15px;
     }
     
-    .sort-dropdown {
+    .village-dropdown {
         width: 100%;
         min-width: auto;
     }
     
-    .sort-trigger {
+    .village-trigger {
         width: 100%;
         padding: 12px 15px;
         height: 45px;
     }
     
-    .sort-menu {
+    .village-menu {
         width: 100%;
         max-height: 200px;
         overflow-y: auto;
     }
     
-    .sort-option {
+    .village-option {
         justify-content: space-between;
         padding: 12px 15px;
         font-size: 14px;
     }
     
-    .sort-text {
+    .village-text {
         font-size: 12px;
         letter-spacing: 0.5px;
     }
     
-    .sort-arrow {
+    .village-arrow {
         font-size: 14px;
     }
     
@@ -1108,26 +1253,26 @@ body {
         left: 12px;
     }
     
-    .sort-trigger {
+    .village-trigger {
         padding: 10px 12px;
         height: 42px;
     }
     
-    .sort-text {
+    .village-text {
         font-size: 11px;
         letter-spacing: 0.3px;
     }
     
-    .sort-arrow {
+    .village-arrow {
         font-size: 13px;
     }
     
-    .sort-option {
+    .village-option {
         padding: 10px 12px;
         font-size: 13px;
     }
     
-    .sort-option-text {
+    .village-option-text {
         font-size: 12px;
     }
     
@@ -1763,4 +1908,9 @@ body {
 
 .contact-message strong {
     color: #c8aa6e;
+}
+
+/* Styles pour le dropdown de tri kekkei genkai */
+#kekkeiSortDropdown {
+    display: none;
 } 

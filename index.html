@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="index, follow">
-    <meta name="description" content="Répertoire des shinobis par Yoyo Mito - Découvrez aussi les clans et kekkei genkai">
+    <meta name="description" content="Répertoire des shinobis RP de l'univers Naruto - Découvrez les clans, villages et kekkei genkai">
     <meta name="author" content="Yoyo Mito">
     <meta name="theme-color" content="#1a1a1a">
     <link rel="icon" type="image/x-icon" href="img/solve logo.png">
@@ -20,7 +20,7 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <div class="nav-brand">
+            <div class="nav-brand" id="navBrand">
                 <img src="img/solve logo.png" alt="Yoyodata Logo" class="nav-logo">
                 <span class="nav-title">Yoyodata</span>
             </div>
@@ -40,33 +40,67 @@
                 </div>
                 <input type="text" class="search-input" placeholder="TROUVER UN SHINOBI" id="searchInput">
             </div>
-            <div class="sort-dropdown" id="sortDropdown">
-                <div class="sort-trigger" id="sortTrigger">
-                    <span class="sort-text">TRIER PAR : VILLAGE</span>
-                    <span class="sort-arrow">
+            <div class="village-dropdown" id="villageDropdown">
+                <div class="village-trigger" id="villageTrigger">
+                    <span class="village-text">TOUS LES SHINOBIS</span>
+                    <span class="village-arrow">
                         <i class="fas fa-chevron-down"></i>
                     </span>
                 </div>
-                <div class="sort-menu" id="sortMenu">
-                    <div class="sort-option" data-sort="village">
-                        <span class="sort-option-icon">
-                            <i class="fas fa-map-marker-alt"></i>
+                <div class="village-menu" id="villageMenu">
+                    <div class="village-option" data-village="all">
+                        <span class="village-option-icon">
+                            <i class="fas fa-users"></i>
                         </span>
-                        <span class="sort-option-text">VILLAGE</span>
+                        <span class="village-option-text">TOUS LES SHINOBIS</span>
                     </div>
-                    <div class="sort-option" data-sort="alphabetical">
-                        <span class="sort-option-icon">
+                    <div class="village-option" data-village="konoha">
+                        <span class="village-option-icon">
+                            <i class="fas fa-leaf"></i>
+                        </span>
+                        <span class="village-option-text">KONOHAGAKURE</span>
+                    </div>
+                    <div class="village-option" data-village="suna">
+                        <span class="village-option-icon">
+                            <i class="fas fa-sun"></i>
+                        </span>
+                        <span class="village-option-text">SUNAGAKURE</span>
+                    </div>
+                                        <div class="village-option" data-village="oto">
+                        <span class="village-option-icon">
+                            <i class="fas fa-music"></i>
+                        </span>
+                        <span class="village-option-text">OTOGAKURE</span>
+                    </div>
+                    <div class="village-option" data-village="nukenin">
+                        <span class="village-option-icon">
+                            <i class="fas fa-skull-crossbones"></i>
+                        </span>
+                        <span class="village-option-text">NUKENIN</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="village-dropdown" id="kekkeiSortDropdown">
+                <div class="village-trigger" id="kekkeiSortTrigger">
+                    <span class="village-text">TRIER PAR A-Z</span>
+                    <span class="village-arrow">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="village-menu" id="kekkeiSortMenu">
+                    <div class="village-option" data-sort="alphabetical">
+                        <span class="village-option-icon">
                             <i class="fas fa-sort-alpha-down"></i>
                         </span>
-                        <span class="sort-option-text">A-Z</span>
+                        <span class="village-option-text">A-Z</span>
                     </div>
-                    <div class="sort-option" data-sort="rarity">
-                        <span class="sort-option-icon">
-                            <i class="fas fa-gem"></i>
+                    <div class="village-option" data-sort="rarity">
+                        <span class="village-option-icon">
+                            <i class="fas fa-star"></i>
                         </span>
-                        <span class="sort-option-text">RARETÉ</span>
+                        <span class="village-option-text">RARETÉ</span>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -79,7 +113,7 @@
                     <div class="hero-icon">
                         <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
                     </div>
-                    <h1 class="hero-title">SHINOBIS</h1>
+                    <h1 class="hero-title" data-title="SHINOBIS">SHINOBIS</h1>
                     <div class="hero-lines">
                         <div class="line left-line"></div>
                         <div class="line right-line"></div>
@@ -141,37 +175,26 @@
                     <p>Otogakure</p>
                 </div>
                 <div class="characters-grid">
-                    <div class="empty-section">
-                        <div class="empty-icon">
-                            <i class="fas fa-clock"></i>
+                    <div class="character-card" data-name="hutch" data-village="oto" data-clan="fuma">
+                        <div class="character-image">
+                            <img src="img/hutch.png" alt="" onerror="this.src='https://via.placeholder.com/300x400/34495e/ffffff?text=Hutch'">
                         </div>
-                        <h3>Prochainement</h3>
-                        <p>Les informations sur les ninjas d'Otogakure arrivent bientôt...</p>
+                        <div class="character-info">
+                            <h3>Hutch Fūma</h3>
+                            <p class="character-title">Maître des Vents</p>
+                            <p class="character-description">Shinobi du clan Fūma d'Otogakure, expert en techniques de vent et armes de jet.</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section id="nukenin" class="village-section">
-                <div class="section-header">
-                    <h2>Nukenin</h2>
-                    <p>Les Shinobis Renégats</p>
-                </div>
-                <div class="characters-grid">
-                    <div class="empty-section">
-                        <div class="empty-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h3>Prochainement</h3>
-                        <p>Les informations sur les ninjas nukenin arrivent bientôt...</p>
-                    </div>
-                </div>
-            </section>
+
         </div>
 
         </div>
 
         <div id="alphabeticalMode" class="content-mode" style="display: none;">
-            <section class="hero">
+            <section class="hero" data-title="SHINOBIS">
                 <div class="hero-content">
                     <div class="hero-icon">
                         <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
@@ -189,7 +212,7 @@
         </div>
 
         <div id="kekkeiMode" class="content-mode" style="display: none;">
-            <section class="hero">
+            <section class="hero" data-title="KEKKEI">
                 <div class="hero-content">
                     <div class="hero-icon">
                         <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
@@ -201,6 +224,9 @@
                     </div>
                 </div>
             </section>
+            
+
+            
             <div class="characters-grid fixed-grid">
                 <div class="empty-section">
                     <div class="empty-icon">
@@ -213,7 +239,7 @@
         </div>
 
         <div id="clansMode" class="content-mode" style="display: none;">
-            <section class="hero">
+            <section class="hero" data-title="CLANS">
                 <div class="hero-content">
                     <div class="hero-icon">
                         <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
@@ -298,12 +324,15 @@
                     <p>Otogakure - Les clans des traîtres</p>
                 </div>
                 <div class="characters-grid">
-                    <div class="empty-section">
-                        <div class="empty-icon">
-                            <i class="fas fa-clock"></i>
+                    <div class="character-card clan-card" data-name="fuma" data-clan="fuma" data-village="oto">
+                        <div class="character-image">
+                            <img src="img/solve logo.png" alt="" onerror="this.src='https://via.placeholder.com/300x400/34495e/ffffff?text=Clan+Fuma'">
                         </div>
-                        <h3>Prochainement</h3>
-                        <p>Les informations sur les clans d'Otogakure arrivent bientôt...</p>
+                        <div class="character-info">
+                            <h3>Clan Fūma</h3>
+                            <p class="character-title">Les maîtres des vents</p>
+                            <p class="character-description">Clan d'Otogakure spécialisé dans les techniques de vent et les armes de jet.</p>
+                        </div>
                     </div>
                 </div>
             </section>
