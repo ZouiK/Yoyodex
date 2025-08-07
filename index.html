@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoyodex - Répertoire des Personnages RP</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Barre de navigation principale -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="img/solve logo.png" alt="Yoyodex Logo" class="nav-logo">
+                <span class="nav-title">Yoyodex</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" data-tab="characters">Personnages</a>
+                <a href="#" class="nav-link" data-tab="clans">Clans</a>
+                <a href="#" class="nav-link" data-tab="kekkei">Kekkei Genkai</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="search-section">
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <input type="text" class="search-input" placeholder="TROUVER UN PERSONNAGE" id="searchInput">
+            </div>
+            <div class="sort-dropdown" id="sortDropdown">
+                <div class="sort-trigger" id="sortTrigger">
+                    <span class="sort-text">TRIER PAR : VILLAGE</span>
+                    <span class="sort-arrow">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </div>
+                <div class="sort-menu" id="sortMenu">
+                    <div class="sort-option" data-sort="village">
+                        <span class="sort-option-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </span>
+                        <span class="sort-option-text">VILLAGE</span>
+                    </div>
+                    <div class="sort-option" data-sort="alphabetical">
+                        <span class="sort-option-icon">
+                            <i class="fas fa-sort-alpha-down"></i>
+                        </span>
+                        <span class="sort-option-text">A-Z</span>
+                    </div>
+                    <div class="sort-option" data-sort="rarity">
+                        <span class="sort-option-icon">
+                            <i class="fas fa-gem"></i>
+                        </span>
+                        <span class="sort-option-text">RARETÉ</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Mode Personnages (par défaut) -->
+        <div id="charactersMode" class="content-mode">
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-icon">
+                        <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
+                    </div>
+                    <h1 class="hero-title">PERSONNAGES</h1>
+                    <div class="hero-lines">
+                        <div class="line left-line"></div>
+                        <div class="line right-line"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="konoha" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché de la Feuille</h2>
+                    <p>Konohagakure</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="character-card" data-name="wallace_uchiha" data-village="konoha" data-clan="uchiha">
+                        <div class="character-image">
+                            <img src="img/wallace_uchiha.jpg" alt="" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/ff6b6b/ffffff?text='">
+                        </div>
+                        <div class="character-info">
+                            <h3>Wallace Uchiha</h3>
+                            <p class="character-title">Inventeur</p>
+                            <p class="character-description">Inventeur génial et amateur de fromage, toujours prêt pour une nouvelle aventure.</p>
+                        </div>
+                    </div>
+                    <div class="character-card" data-name="gromit_uzumaki" data-village="konoha" data-clan="uzumaki">
+                        <div class="character-image">
+                            <img src="img/gromit_uzumaki.jpg" alt="" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/4ecdc4/ffffff?text='">
+                        </div>
+                        <div class="character-info">
+                            <h3>Gromit Uzumaki</h3>
+                            <p class="character-title">Chien Intelligent</p>
+                            <p class="character-description">Chien fidèle et intelligent, partenaire inséparable de Wallace dans toutes ses inventions.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="suna" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché du Sable</h2>
+                    <p>Sunagakure</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les ninjas de Sunagakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Village Caché de la Brume -->
+            <section id="kiri" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché de la Brume</h2>
+                    <p>Kirigakure</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les ninjas de Kirigakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Village Caché des Nuages -->
+            <section id="kumo" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché des Nuages</h2>
+                    <p>Kumogakure</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les ninjas de Kumogakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="oto" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché du Son</h2>
+                    <p>Otogakure</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les ninjas d'Otogakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="nukenin" class="village-section">
+                <div class="section-header">
+                    <h2>Nukenin</h2>
+                    <p>Les Shinobis Renégats</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les ninjas nukenin arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        </div>
+
+        <!-- Mode Alphabétique -->
+        <div id="alphabeticalMode" class="content-mode" style="display: none;">
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-icon">
+                        <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
+                    </div>
+                    <h1 class="hero-title">PERSONNAGES</h1>
+                    <div class="hero-lines">
+                        <div class="line left-line"></div>
+                        <div class="line right-line"></div>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="alphabetical-grid" id="alphabeticalGrid">
+                <!-- Les personnages seront injectés ici par JavaScript -->
+            </div>
+        </div>
+
+        <!-- Mode Kekkei Genkai -->
+        <div id="kekkeiMode" class="content-mode" style="display: none;">
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-icon">
+                        <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
+                    </div>
+                    <h1 class="hero-title">KEKKEI GENKAI</h1>
+                    <div class="hero-lines">
+                        <div class="line left-line"></div>
+                        <div class="line right-line"></div>
+                    </div>
+                </div>
+            </section>
+            <div class="characters-grid fixed-grid">
+                <div class="empty-section">
+                    <div class="empty-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Prochainement</h3>
+                    <p>Les informations sur les Kekkei Genkai arrivent bientôt...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Clans -->
+        <div id="clansMode" class="content-mode" style="display: none;">
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-icon">
+                        <img src="img/solve logo.png" alt="Rubik's Cube" class="hero-logo">
+                    </div>
+                    <h1 class="hero-title">CLANS</h1>
+                    <div class="hero-lines">
+                        <div class="line left-line"></div>
+                        <div class="line right-line"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="konoha-clans" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché de la Feuille</h2>
+                    <p>Konohagakure</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="character-card clan-card" data-name="uchiha" data-clan="uchiha" data-village="konoha">
+                        <div class="character-image">
+                            <img src="img/uchiha.png" alt="" onerror="this.src='https://via.placeholder.com/300x400/ff0000/ffffff?text=Clan+Uchiha'">
+                        </div>
+                        <div class="character-info">
+                            <h3>Clan Uchiha</h3>
+                            <p class="character-title">Les descendants du Sage</p>
+                            <p class="character-description">Clan légendaire réputé pour son Sharingan et sa maîtrise des techniques de feu.</p>
+                        </div>
+                    </div>
+                    <div class="character-card clan-card" data-name="senju" data-clan="senju" data-village="konoha">
+                        <div class="character-image">
+                            <img src="img/senju.png" alt="" onerror="this.src='https://via.placeholder.com/300x400/4ecdc4/ffffff?text=Clan+Senju'">
+                        </div>
+                        <div class="character-info">
+                            <h3>Clan Senju</h3>
+                            <p class="character-title">Les héritiers de la Volonté du Feu</p>
+                            <p class="character-description">Clan fondateur de Konoha, maîtres de toutes les natures de chakra.</p>
+                        </div>
+                    </div>
+                    <div class="character-card clan-card" data-name="hyuga" data-clan="hyuga" data-village="konoha">
+                        <div class="character-image">
+                            <img src="img/hyuga.png" alt="" onerror="this.src='https://via.placeholder.com/300x400/ffffff/000000?text=Clan+Hyuga'">
+                        </div>
+                        <div class="character-info">
+                            <h3>Clan Hyūga</h3>
+                            <p class="character-title">Les gardiens du Byakugan</p>
+                            <p class="character-description">Clan noble protégeant le secret du Byakugan et maîtrisant l'art du Jūken.</p>
+                        </div>
+                    </div>
+                    <div class="character-card clan-card" data-name="uzumaki" data-clan="uzumaki" data-village="konoha">
+                        <div class="character-image">
+                            <img src="img/uzumaki.png" alt="" onerror="this.src='https://via.placeholder.com/300x400/9b59b6/ffffff?text=Clan+Uzumaki'">
+                        </div>
+                        <div class="character-info">
+                            <h3>Clan Uzumaki</h3>
+                            <p class="character-title">Les maîtres des sceaux</p>
+                            <p class="character-description">Clan réputé pour ses techniques de sceaux et sa spirale caractéristique.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="suna-clans" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché du Sable</h2>
+                    <p>Sunagakure - Les clans du désert</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les clans de Sunagakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="oto-clans" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché du Son</h2>
+                    <p>Otogakure - Les clans des traîtres</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les clans d'Otogakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Kiri Clans -->
+            <section id="kiri-clans" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché de la Brume</h2>
+                    <p>Kirigakure - Les clans de l'eau</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les clans de Kirigakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Kumo Clans -->
+            <section id="kumo-clans" class="village-section">
+                <div class="section-header">
+                    <h2>Village Caché des Nuages</h2>
+                    <p>Kumogakure - Les clans de la foudre</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les clans de Kumogakure arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="other-clans" class="village-section">
+                <div class="section-header">
+                    <h2>Autres Clans</h2>
+                    <p>Les clans indépendants et mystérieux</p>
+                </div>
+                <div class="characters-grid">
+                    <div class="empty-section">
+                        <div class="empty-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Prochainement</h3>
+                        <p>Les informations sur les autres clans arrivent bientôt...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Yoyodex - Répertoire RP | <a href="#" id="contactLink" class="contact-link">Yoyo Mito - Comment me contactez</a></p>
+            </div>
+        </footer>
+
+        <!-- Modal de contact -->
+        <div id="contactModal" class="contact-modal">
+            <div class="contact-modal-content">
+                <span class="contact-close">&times;</span>
+                <h2>Contact - Yoyo Mito</h2>
+                <div class="contact-message">
+                    <p>N'hésitez pas à prendre rendez-vous avec moi en m'envoyant une missive pour faire une interview pour par la suite vous inscrire dans le répertoire.</p>
+                    <p>Je suis à la recherche de nouvelles personnes pour enrichir cette collection. Que vous soyez un ninja expérimenté ou un débutant, votre histoire mérite d'être racontée !</p>
+                    <p><strong>Pour me contacter :</strong></p>
+                    <p>Envoyez-moi une missive</p>
+                    <p>Je répondrai dans les plus brefs délais pour arranger un rendez-vous !</p>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+    </html> 
+    </html> 
+

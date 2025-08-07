@@ -1,0 +1,188 @@
+/* Palette */
+:root {
+    --bg: #0b0c10;
+    --gold: #cfa86e;
+    --text: #e5e5e5;
+    --text-muted: #9a9a9a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Masquer les barres de scroll */
+html, body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ----- Header ----- */
+.hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+}
+
+.character-name {
+    font-family: 'Cinzel', serif;
+    font-size: 3.4rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 15px;
+}
+
+.character-quote {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+/* ----- Layout ----- */
+.content-wrapper {
+    flex: 1;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.columns {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    margin-bottom: 60px;
+}
+
+.left-column,
+.right-column {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Info blocks */
+.info-block {
+    border: 1px solid rgba(207, 168, 110, 0.35);
+    padding: 20px 25px;
+    transition: border-color .3s ease, transform .3s ease;
+    cursor: default;
+}
+
+.info-block h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-block p {
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.info-block:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+}
+
+/* Portrait & Emblem */
+.portrait-container,.emblem-container {
+    border: 1px solid rgba(207, 168, 110, 0.35);
+    padding: 15px;
+    text-align: center;
+}
+
+.portrait {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.emblem {
+    width: 120px;
+    height: auto;
+    opacity: .85;
+}
+
+.back-btn{
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    width: 44px;
+    height: 44px;
+    border:1px solid var(--gold);
+    color: var(--gold);
+    font-size:24px;
+    text-align:center;
+    line-height:42px;
+    text-decoration:none;
+    transition:background .3s ease, color .3s ease;
+}
+.back-btn:hover{background:var(--gold);color:#0b0c10;}
+
+/* Biography */
+.bio-section {
+    max-width: 900px;
+    margin: 0 auto 80px;
+}
+
+.bio-section h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.bio-section p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    text-align: justify;
+    color: var(--text);
+}
+
+/* Footer removed */
+
+/* Hover effect clan link */
+#clanField {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#clanField:hover {
+    color: var(--gold);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .columns {
+        flex-direction: column;
+        gap: 60px;
+    }
+
+    .portrait,.emblem {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .character-name {
+        font-size: 2.6rem;
+    }
+}

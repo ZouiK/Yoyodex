@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nom du Clan – Fiche RP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="clan-detail.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-btn" title="Retour">⟵</a>
+    <header class="hero">
+        <h1 id="clanName" class="clan-name">Nom Clan</h1>
+        <p id="clanQuote" class="clan-quote">« Citation ou mantra du clan »</p>
+    </header>
+
+    <main class="content-wrapper">
+        <section class="columns">
+            <!-- Colonne gauche -->
+            <aside class="left-column">
+                <div class="info-block">
+                    <h2>Village</h2>
+                    <p id="villageField">-</p>
+                </div>
+                <div class="info-block">
+                    <h2>Spécialité</h2>
+                    <p id="specialtyField">-</p>
+                </div>
+                <div class="info-block">
+                    <h2>Membres Notables</h2>
+                    <p id="membersField">-</p>
+                </div>
+            </aside>
+
+            <!-- Colonne droite -->
+            <aside class="right-column">
+                <div class="portrait-container">
+                    <img id="portraitImg" src="https://via.placeholder.com/400x600/444/ffffff?text=Portrait" alt="Portrait" class="portrait">
+                </div>
+                <div class="emblem-container">
+                    <img id="emblemImg" src="https://via.placeholder.com/120x120/666/ffffff?text=Emblem" alt="Embleme" class="emblem">
+                </div>
+            </aside>
+        </section>
+
+        <!-- Biographie -->
+        <section class="bio-section">
+            <h2>Histoire du Clan</h2>
+            <p id="bioText">Histoire du clan...</p>
+        </section>
+
+        <!-- Membres du clan -->
+        <section class="members-section">
+            <h2>Membres du Clan</h2>
+            <div class="characters-grid members-grid" id="membersGrid"></div>
+        </section>
+    </main>
+
+    <script src="clan-detail.js"></script>
+</body>
+</html> 

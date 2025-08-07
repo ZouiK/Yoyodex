@@ -1,0 +1,364 @@
+/* Styles pour la page de personnage */
+body {
+    background: #0f1419;
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header du personnage */
+.character-header {
+    position: relative;
+    height: 60vh;
+    background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.character-header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(200, 170, 110, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+    z-index: 1;
+}
+
+.character-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 40px;
+}
+
+.character-portrait {
+    width: 300px;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 4px solid #c8aa6e;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    flex-shrink: 0;
+}
+
+.character-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.character-portrait:hover img {
+    transform: scale(1.05);
+}
+
+.character-info-main {
+    flex: 1;
+    max-width: 600px;
+}
+
+.character-name {
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: #c8aa6e;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.character-title {
+    font-size: 1.5rem;
+    color: #a09b8c;
+    margin: 0 0 15px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.character-village {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin: 0 0 25px 0;
+    font-weight: 400;
+}
+
+.character-tags {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: rgba(200, 170, 110, 0.2);
+    color: #c8aa6e;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(200, 170, 110, 0.3);
+}
+
+/* Contenu principal */
+.character-main {
+    padding: 80px 0;
+    background: #0f1419;
+}
+
+.character-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.character-section {
+    margin-bottom: 80px;
+}
+
+.section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #c8aa6e;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid rgba(200, 170, 110, 0.3);
+    padding-bottom: 15px;
+}
+
+.section-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #a09b8c;
+}
+
+.section-content p {
+    margin-bottom: 20px;
+}
+
+/* Grille des statistiques */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(200, 170, 110, 0.3);
+    transform: translateY(-2px);
+}
+
+.stat-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #c8aa6e, #f0e68c);
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.stat-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-name {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    color: #c8aa6e;
+    font-weight: 700;
+}
+
+/* Grille des techniques */
+.techniques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.technique-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.technique-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(200, 170, 110, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.technique-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(200, 170, 110, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    color: #c8aa6e;
+    border: 2px solid rgba(200, 170, 110, 0.3);
+}
+
+.technique-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.technique-card p {
+    font-size: 1rem;
+    color: #a09b8c;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Bouton retour */
+.back-button {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    background: rgba(200, 170, 110, 0.9);
+    color: #1a1f2e;
+    padding: 15px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.back-button:hover {
+    background: #c8aa6e;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+
+.back-button i {
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .character-header {
+        height: auto;
+        min-height: 50vh;
+        padding: 60px 0;
+    }
+    
+    .character-header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+        padding: 0 20px;
+    }
+    
+    .character-portrait {
+        width: 250px;
+        height: 330px;
+    }
+    
+    .character-name {
+        font-size: 3rem;
+    }
+    
+    .character-title {
+        font-size: 1.3rem;
+    }
+    
+    .character-content {
+        padding: 0 20px;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .techniques-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .back-button {
+        bottom: 20px;
+        left: 20px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .character-name {
+        font-size: 2.5rem;
+    }
+    
+    .character-portrait {
+        width: 200px;
+        height: 260px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .back-button {
+        bottom: 15px;
+        left: 15px;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+    }
+} 
