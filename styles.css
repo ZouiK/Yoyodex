@@ -1,8 +1,21 @@
-/* Reset et styles de base */
+/* Reset et styles de base - CSS critique pour le LCP */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Optimisations pour le LCP */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Préchargement des images critiques */
+.hero {
+    will-change: transform;
+    contain: layout style paint;
 }
 
 body {
@@ -496,14 +509,23 @@ body {
 
 .hero[data-title="SHINOBIS"] {
     background-image: url('img/shinobis.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero[data-title="CLANS"] {
     background-image: url('img/shinobis.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero[data-title="KEKKEI"] {
     background-image: url('img/kekkei_genkai.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero-content {

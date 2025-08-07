@@ -13,8 +13,14 @@
     <link rel="apple-touch-icon" href="img/solve logo.png">
     <title>Yoyodata - Répertoire des Shinobis RP</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Préchargement des images critiques -->
+    <link rel="preload" href="img/shinobis.webp" as="image">
+    <link rel="preload" href="img/kekkei_genkai.webp" as="image">
+    <link rel="preload" href="img/solve logo.png" as="image">
+    
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
@@ -129,7 +135,7 @@
                 <div class="characters-grid">
                     <div class="character-card" data-name="wallace_uchiha" data-village="konoha" data-clan="uchiha">
                         <div class="character-image">
-                            <img src="img/wallace_uchiha.jpg" alt="" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/ff6b6b/ffffff?text='">
+                            <img src="img/wallace_uchiha.jpg" alt="" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/ff6b6b/ffffff?text='">
                         </div>
                         <div class="character-info">
                             <h3>Wallace Uchiha</h3>
@@ -139,7 +145,7 @@
                     </div>
                     <div class="character-card" data-name="gromit_uzumaki" data-village="konoha" data-clan="uzumaki">
                         <div class="character-image">
-                            <img src="img/gromit_uzumaki.jpg" alt="" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/4ecdc4/ffffff?text='">
+                            <img src="img/gromit_uzumaki.jpg" alt="" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/4ecdc4/ffffff?text='">
                         </div>
                         <div class="character-info">
                             <h3>Gromit Uzumaki</h3>
@@ -177,7 +183,7 @@
                 <div class="characters-grid">
                     <div class="character-card" data-name="hutch" data-village="oto" data-clan="fuma">
                         <div class="character-image">
-                            <img src="img/hutch.png" alt="" onerror="this.src='https://via.placeholder.com/300x400/34495e/ffffff?text=Hutch'">
+                            <img src="img/hutch.png" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/300x400/34495e/ffffff?text=Hutch'">
                         </div>
                         <div class="character-info">
                             <h3>Hutch Fūma</h3>
