@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     setupAnimations();
     applyFixedGridLayout();
+    preloadCriticalImages();
     
     // Vérifier les paramètres d'URL pour déterminer l'onglet actif
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,6 +28,27 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeVillageMenu();
     }
 });
+
+// Précharger les images critiques pour améliorer les transitions
+function preloadCriticalImages() {
+    const criticalImages = [
+        'img/shinobis.webp',
+        'img/kekkei_genkai.webp',
+        'img/clans.webp',
+        'img/konoha.webp',
+        'img/suna.webp',
+        'img/oto.webp',
+        'img/nukenin.webp',
+        'img/solve logo.png'
+    ];
+    
+    criticalImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+    
+    console.log('🖼️ Images critiques préchargées');
+}
 
 // Initialiser le menu des villages au démarrage
 function initializeVillageMenu() {
@@ -167,6 +189,9 @@ function loadCharacterImage(characterName, dataName, imgElement, character) {
             imgElement.src = imagePath;
             imgElement.alt = characterName;
             character.image = imagePath;
+            
+            // Transition fluide pour l'image
+            imgElement.style.opacity = '1';
         };
         
         testImg.onerror = function() {
@@ -449,12 +474,18 @@ function switchTab(tab) {
         if (kekkeiSortDropdown) kekkeiSortDropdown.style.display = 'block';
     }
 
-    // Masquer tous les modes
-    document.getElementById('charactersMode').style.display = 'none';
-    document.getElementById('alphabeticalMode').style.display = 'none';
-    document.getElementById('clansMode').style.display = 'none';
-    const kekkeiMode = document.getElementById('kekkeiMode');
-    if (kekkeiMode) kekkeiMode.style.display = 'none';
+    // Masquer tous les modes avec transition fluide
+    const modes = ['charactersMode', 'alphabeticalMode', 'clansMode', 'kekkeiMode'];
+    modes.forEach(modeId => {
+        const mode = document.getElementById(modeId);
+        if (mode) {
+            mode.style.opacity = '0';
+            mode.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                mode.style.display = 'none';
+            }, 150);
+        }
+    });
     
     // Masquer le mode alphabétique des clans s'il existe
     const clansAlphabeticalMode = document.getElementById('clansAlphabeticalMode');
@@ -462,28 +493,30 @@ function switchTab(tab) {
         clansAlphabeticalMode.style.display = 'none';
     }
     
-    // Afficher le mode approprié
-    if (tab === 'characters') {
-        currentTab = 'characters';
-        showAlphabeticalMode(); // Afficher directement la vue alphabétique
-        updateCharactersDisplay();
-    } else if (tab === 'clans') {
-        currentTab = 'clans';
-        showClansAlphabeticalMode(); // Afficher directement la vue alphabétique
-        updateClansDisplay();
-    } else if (tab === 'kekkei') {
-        currentTab = 'kekkei';
-        if (document.getElementById('kekkeiMode')) {
-            document.getElementById('kekkeiMode').style.display = 'block';
+    // Afficher le mode approprié avec transition fluide
+    setTimeout(() => {
+        if (tab === 'characters') {
+            currentTab = 'characters';
+            showAlphabeticalMode(); // Afficher directement la vue alphabétique
+            updateCharactersDisplay();
+        } else if (tab === 'clans') {
+            currentTab = 'clans';
+            showClansAlphabeticalMode(); // Afficher directement la vue alphabétique
+            updateClansDisplay();
+        } else if (tab === 'kekkei') {
+            currentTab = 'kekkei';
+            const kekkeiMode = document.getElementById('kekkeiMode');
+            if (kekkeiMode) {
+                kekkeiMode.style.display = 'block';
+                setTimeout(() => {
+                    kekkeiMode.style.opacity = '1';
+                    kekkeiMode.style.transform = 'translateY(0)';
+                }, 10);
+            }
+            const searchInput2 = document.getElementById('searchInput');
+            if (searchInput2) searchInput2.placeholder = 'TROUVER UN KEKKEI GENKAI';
         }
-        document.getElementById('charactersMode').style.display = 'none';
-        document.getElementById('alphabeticalMode').style.display = 'none';
-        document.getElementById('clansMode').style.display = 'none';
-        const clansAlphabeticalMode2 = document.getElementById('clansAlphabeticalMode');
-        if (clansAlphabeticalMode2) clansAlphabeticalMode2.style.display = 'none';
-        const searchInput2 = document.getElementById('searchInput');
-        if (searchInput2) searchInput2.placeholder = 'TROUVER UN KEKKEI GENKAI';
-    }
+    }, 150);
 }
 
 // Afficher le mode village
@@ -501,18 +534,40 @@ function showVillageMode() {
     }
 }
 
-// Afficher le mode alphabétique
+// Afficher le mode alphabétique avec transition fluide
 function showAlphabeticalMode() {
-    document.getElementById('charactersMode').style.display = 'none';
-    document.getElementById('alphabeticalMode').style.display = 'block';
+    const charactersMode = document.getElementById('charactersMode');
+    const alphabeticalMode = document.getElementById('alphabeticalMode');
+    const clansMode = document.getElementById('clansMode');
     
-    // Masquer complètement le mode clans
-    document.getElementById('clansMode').style.display = 'none';
+    // Masquer les autres modes avec transition
+    [charactersMode, clansMode].forEach(mode => {
+        if (mode) {
+            mode.style.opacity = '0';
+            mode.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                mode.style.display = 'none';
+            }, 150);
+        }
+    });
     
-    // Masquer le mode alphabétique des clans s'il existe
+    // Masquer le mode alphabétique des clans
     const clansAlphabeticalMode = document.getElementById('clansAlphabeticalMode');
     if (clansAlphabeticalMode) {
-        clansAlphabeticalMode.style.display = 'none';
+        clansAlphabeticalMode.style.opacity = '0';
+        clansAlphabeticalMode.style.transform = 'translateY(10px)';
+        setTimeout(() => {
+            clansAlphabeticalMode.style.display = 'none';
+        }, 150);
+    }
+    
+    // Afficher le mode alphabétique avec transition
+    if (alphabeticalMode) {
+        alphabeticalMode.style.display = 'block';
+        setTimeout(() => {
+            alphabeticalMode.style.opacity = '1';
+            alphabeticalMode.style.transform = 'translateY(0)';
+        }, 10);
     }
     
     // Créer la grille alphabétique si elle n'existe pas encore
@@ -596,10 +651,16 @@ function createAlphabeticalCard(character) {
         </div>
     `;
     
-    // Mettre à jour l'image avec le système automatique
+    // Mettre à jour l'image avec le système automatique et transition fluide
     const imgElement = card.querySelector('img');
     if (imgElement) {
+        imgElement.style.opacity = '0';
         loadCharacterImage(character.displayName, character.dataName, imgElement, character);
+        
+        // Ajouter une transition fluide quand l'image est chargée
+        imgElement.onload = function() {
+            this.style.opacity = '1';
+        };
     }
     
     return card;
@@ -685,6 +746,7 @@ function setHeroBackgroundWithFallback(heroElement, imageName) {
         const img = new Image();
         img.onload = function() {
             heroElement.style.backgroundImage = `url('${imageUrl}')`;
+            heroElement.style.opacity = '1';
         };
         img.onerror = function() {
             currentFormatIndex++;

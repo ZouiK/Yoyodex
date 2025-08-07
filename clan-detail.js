@@ -48,9 +48,9 @@ const clansData = {
     },
     fuma: {
         name: 'Clan Fūma',
-        quote: '« Les vents du changement portent notre destin. »',
+        quote: '« ... »',
         village: 'Otogakure',
-        specialty: 'Techniques de vent et armes de jet',
+        specialty: '???',
         members: 'Hutch Fūma',
         membersLinks: [
             {name: 'Hutch Fūma', key: 'hutch'}
