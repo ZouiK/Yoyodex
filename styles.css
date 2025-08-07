@@ -16,35 +16,32 @@ img {
 .hero {
     will-change: transform;
     contain: layout style paint;
-    transition: all 0.3s ease-in-out;
 }
 
 /* Transitions fluides pour les onglets */
 .content-mode {
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    /* Transitions supprimées pour éviter le flash d'image */
 }
 
 .content-mode[style*="display: none"] {
-    opacity: 0;
-    transform: translateY(10px);
+    /* Styles supprimés pour éviter le flash d'image */
 }
 
 .content-mode:not([style*="display: none"]) {
-    opacity: 1;
-    transform: translateY(0);
+    /* Styles supprimés pour éviter le flash d'image */
 }
 
 /* Optimisation des images pour les transitions */
 .character-image img {
-    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    /* Transitions supprimées pour éviter le flash d'image */
 }
 
 .character-image img[loading] {
-    opacity: 0;
+    /* Styles supprimés pour éviter le flash d'image */
 }
 
 .character-image img:not([loading]) {
-    opacity: 1;
+    /* Styles supprimés pour éviter le flash d'image */
 }
 
 body {
