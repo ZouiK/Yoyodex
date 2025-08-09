@@ -1,4 +1,5 @@
 import './globals.css'
+import Link from 'next/link'
 
 export const metadata = { title: 'Yoyodex', description: 'Ninjas, clans et kekkei genkai' }
 
@@ -8,10 +9,10 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen flex flex-col">
         <header className="border-b bg-white">
           <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-            <a href="/" className="text-xl font-semibold">Yoyodex</a>
+            <Link href="/" className="text-xl font-semibold">Yoyodex</Link>
             <nav className="flex items-center gap-4">
-              <a className="hover:underline" href="/">Ninjas</a>
-              <a className="hover:underline" href="/admin">Admin</a>
+              <Link className="hover:underline" href="/">Ninjas</Link>
+              <Link className="hover:underline" href="/admin">Admin</Link>
             </nav>
           </div>
         </header>
