@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { supabase } from '@/lib/supabase'
+import Image from 'next/image'
 
 export default async function Home() {
   const { data: ninjas = [] } = await supabase
@@ -13,8 +14,16 @@ export default async function Home() {
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {ninjas.map(n => (
           <li key={n.id} className="border rounded-xl bg-white p-4 flex flex-col gap-3">
-            <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-100">
-              {n.image_url ? <img src={n.image_url} alt={n.name} className="w-full h-full object-cover" /> : null}
+            <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-100 relative">
+              {n.image_url ? (
+                <Image
+                  src={n.image_url}
+                  alt={n.name}
+                  fill
+                  sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              ) : null}
             </div>
             <div className="space-y-1">
               <div className="text-lg font-medium">{n.name}</div>
