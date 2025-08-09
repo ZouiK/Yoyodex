@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
 
 async function api(path, init) {
   const res = await fetch(`/api/${path}`, init)
@@ -189,8 +190,16 @@ export default function Admin() {
           {ninjas.map(n=>(
             <div key={n.id} className="flex items-center justify-between border rounded-lg p-3">
               <div className="flex items-center gap-3">
-                <div className="w-16 h-16 rounded-md overflow-hidden bg-neutral-100">
-                  {n.image_url ? <img src={n.image_url} alt={n.name} className="w-full h-full object-cover" /> : null}
+                <div className="w-16 h-16 rounded-md overflow-hidden bg-neutral-100 relative">
+                  {n.image_url ? (
+                    <Image
+                      src={n.image_url}
+                      alt={n.name}
+                      width={64}
+                      height={64}
+                      className="object-cover w-16 h-16"
+                    />
+                  ) : null}
                 </div>
                 <div>
                   <div className="font-medium">{n.name}</div>
