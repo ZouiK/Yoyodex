@@ -1,41 +1,11 @@
-export const dynamic = 'force-dynamic'
-import { supabase } from '@/lib/supabase'
-import Image from 'next/image'
+import Image from 'next/image';
 
-export default async function Home() {
-  const { data: ninjas = [] } = await supabase
-    .from('ninjas')
-    .select('id,name,village,clan_id,kekkei_id,grade,description,image_url')
-    .order('name', { ascending: true })
-
+export default function HomePage() {
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Liste des ninjas</h1>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {ninjas.map(n => (
-          <li key={n.id} className="border rounded-xl bg-white p-4 flex flex-col gap-3">
-            <div className="w-full aspect-video overflow-hidden rounded-lg bg-neutral-100 relative">
-              {n.image_url ? (
-                <Image
-                  src={n.image_url}
-                  alt={n.name}
-                  fill
-                  sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              ) : null}
-            </div>
-            <div className="space-y-1">
-              <div className="text-lg font-medium">{n.name}</div>
-              <div className="text-sm text-neutral-600">Village: {n.village || '—'}</div>
-              <div className="text-sm text-neutral-600">Clan: {n.clan_id ? n.clan_id : 'Sans clan'}</div>
-              <div className="text-sm text-neutral-600">Kekkei: {n.kekkei_id ? n.kekkei_id : 'Sans kekkei'}</div>
-              <div className="text-sm text-neutral-600">Grade: {n.grade || '—'}</div>
-              <p className="text-sm">{n.description || ''}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+    <main>
+      <Image src="/logo.png" alt="Logo" width={180} height={48} priority />
+      <h1>Bienvenue sur Yoyodex</h1>
+      <p>Votre app Next.js dynamique.</p>
+    </main>
+  );
 }
