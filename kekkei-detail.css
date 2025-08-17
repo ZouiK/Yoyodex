@@ -1,0 +1,39 @@
+/* Base layout matching other detail pages */
+:root { --bg:#0f1220; --panel:#1a1f2e; --text:#e6e6e6; --muted:#a8b0c3; --accent:#c8aa6e; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif}
+.main-nav{position:sticky;top:0;z-index:10;background:#0e1120cc;backdrop-filter:blur(6px);border-bottom:1px solid #242a3d}
+.nav-container{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.nav-logo{width:28px;height:28px}
+.nav-title{font-family:Cinzel,serif;letter-spacing:.5px}
+.nav-menu{display:flex;gap:14px}
+.nav-link{color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:6px;transition:.2s}
+.nav-link:hover,.nav-link.active{color:var(--text);background:#1f253a}
+
+.back-btn{position:fixed;left:16px;top:68px;background:#1f253a;color:#fff;text-decoration:none;border-radius:8px;padding:6px 10px;z-index:5}
+
+.hero{padding:48px 16px 32px;background:linear-gradient(180deg,#14192b 0%, #0f1220 100%);text-align:center;border-bottom:1px solid #242a3d}
+.kekkei-name{font-family:Cinzel,serif;margin:0 0 8px 0;font-size:36px;color:#fff}
+.kekkei-subtitle{margin:0;color:var(--muted)}
+
+.content-wrapper{max-width:1100px;margin:24px auto;padding:0 16px}
+.columns{display:grid;grid-template-columns:1fr 380px;gap:24px}
+.left-column .info-block{background:var(--panel);border:1px solid #242a3d;border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.info-block h2{margin:0 0 6px 0;font-family:Cinzel,serif;font-size:16px;color:var(--accent)}
+.info-block p{margin:0;color:var(--text)}
+.info-block.placeholder p{color:#7c859c}
+
+.right-column .portrait-container{background:var(--panel);border:1px solid #242a3d;border-radius:10px;padding:12px;display:flex;justify-content:center}
+.portrait{width:100%;height:auto;border-radius:8px;object-fit:cover}
+.emblem-container{display:flex;justify-content:center;margin-top:12px}
+.emblem{width:100px;height:100px;border-radius:50%;border:2px solid #242a3d;background:#121629}
+
+.bio-section{margin-top:18px;background:var(--panel);border:1px solid #242a3d;border-radius:10px;padding:16px}
+.bio-section h2{font-family:Cinzel,serif;margin:0 0 8px 0;color:var(--accent)}
+.bio-section p{margin:0;color:var(--text);line-height:1.6}
+
+@media (max-width: 900px){
+  .columns{grid-template-columns:1fr;}
+  .back-btn{top:56px}
+}
